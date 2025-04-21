@@ -58,7 +58,7 @@ function Login() {
           <main className={ styled.main }>
             <div className={ styled.main__welcome }>
               <img src={ logo } alt="logo" className={ styled.main__welcome__logo } />
-              <h1 className={ styled.main__welcome__text }>Bem-vindo de volta ao <span>OwnLight!</span></h1>
+              <h1 className={ styled.main__welcome__text }>Bem-vindo de volta ao <span>OwnEnergy!</span></h1>
             </div>
 
             <div className={ styled.main__div }></div>

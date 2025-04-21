@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import styled from './style.module.scss'
 
-import { SeachIcon } from '../../../assets/Home/Search'
+import { SearchIcon } from '../../../assets/Home/Search'
 
 import Switch from '../../Common/Switch'
 
@@ -45,9 +45,9 @@ const SearchBar = ({ list, listRoom, handleModalFunc, sendData}: SearchBarProps)
   }, []);
 
   return (
-    <div className={ styled.search } ref={listaRef}>
+    <div className={ styled.search } ref={ listaRef }>
       <div className={ styled.search__search_bar} >
-        <SeachIcon className={ styled.search__search_bar__img }/>
+        <SearchIcon className={ styled.search__search_bar__img }/>
         <input className={ styled.search__search_bar__input } 
           type="text" 
           placeholder="Pesquise"

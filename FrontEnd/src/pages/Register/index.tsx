@@ -17,7 +17,6 @@ function Register() {
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
 
-
   const [alertProps, setAlertProps] = useState({ message: '', timeDuration: 0, type: 'success' as 'success' | 'error' });
   const [alertOpen, setAlertOpen] = useState(false)
 
@@ -31,6 +30,7 @@ function Register() {
       if (response.statusCode >= 400) {
         throw response;
       }
+      
       setEmail('');
       setPassword('');
       setName('');
@@ -65,7 +65,7 @@ function Register() {
           <main className={ styled.main }>
             <div className={ styled.main__welcome }>
               <img src={ logo } alt="logo" className={ styled.main__welcome__logo } />
-              <h1 className={ styled.main__welcome__text }>Bem-vindo ao <span>OwnLight!</span></h1>
+              <h1 className={ styled.main__welcome__text }>Bem-vindo ao <span>OwnEnergy!</span></h1>
             </div>
 
             <div className={ styled.main__div }></div>

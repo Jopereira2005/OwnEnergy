@@ -29,7 +29,28 @@ function Home() {
   const [devices, setDevices] = useState<Device[]>([])
   const [filteredDevices, setfilteredDevices] = useState<Device[]>([]);
 
-  const [rooms, setRooms] = useState<Room[]>([]);
+  const [rooms, setRooms] = useState<Room[]>([
+    {
+      id: '1',
+      name: "Sala",
+      userId: "1"
+    }, 
+    {
+      id: '2',
+      name: "Cozinha",
+      userId: "1"
+    },
+    {
+      id: '3',
+      name: "Quarto",
+      userId: "1"
+    },
+    {
+      id: '4',
+      name: "Banheiro",
+      userId: "1"
+    }  
+  ]);
 
   const [pressTimer, setPressTimer] = useState<NodeJS.Timeout | null>(null);
   const [alertProps, setAlertProps] = useState({ message: '', timeDuration: 0, type: 'error' as 'success' | 'error'});

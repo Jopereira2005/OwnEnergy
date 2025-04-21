@@ -6,6 +6,8 @@ import styled from "./style.module.scss"
 import { DashboardIcon } from "../../../assets/NavBar/Dashboard"
 import { HomeIcon } from "../../../assets/NavBar/Home"
 import { RoutineIcon } from "../../../assets/NavBar/Routine"
+import { NewsIcon } from "../../../assets/NavBar/News"
+
 
 const NavBar = () => {
   const navigate = useNavigate();
@@ -31,7 +33,12 @@ const NavBar = () => {
           <h1 className={ styled.text }>Home</h1>
         </div>
 
-        <div onClick={() => handlePage('/')} className={ page == "dashboard" ? styled.navbar__item_active : styled.navbar__item }>
+        <div onClick={() => handlePage('/')} className={ page == "/news" ? styled.navbar__item_active : styled.navbar__item }>
+          <NewsIcon className={ styled.icon }/>
+          <h1 className={ styled.text }>News</h1>
+        </div>
+
+        <div onClick={() => handlePage('/')} className={ page == "/dashboard" ? styled.navbar__item_active : styled.navbar__item }>
           <DashboardIcon className={ styled.icon }/>
           <h1 className={ styled.text }>Dashboard</h1>
         </div>
