@@ -1,0 +1,109 @@
+@import "../../../global.scss";
+
+.search {
+  position: relative;
+  width: 100%;
+  @extend %flex-column;
+  justify-content: center;
+
+  &__search_bar {
+    @extend %flex-center-y;
+    width: calc(100% - 30px);
+    background-color: $secondary-color;
+    border-radius: 25px;
+    padding: 15px;
+    @extend %box_shadow;
+
+
+    &__img {
+      font-size: 2rem;
+      margin-right: 10px;
+    }
+
+    &__input {
+      width: 100%; 
+      background-color: transparent;
+      outline: none;
+      border: none;
+      color: $light-color;
+      font-size: 1.5rem;
+
+      &::placeholder {
+        color: $gray-scale;
+      }
+    }
+  }
+
+  &__list {
+    position: absolute;
+    top: 50px;
+    z-index: 15;
+    @extend %flex-column;
+    max-height: 350px;
+    overflow-y: auto;
+    margin-top: 10px;
+    list-style: none;
+    width: calc(100% - 30px);
+    background-color: $secondary-color;
+    border-radius: 25px;
+    padding: 15px 15px 15px 15px;
+    gap: 5px;
+    @extend %box_shadow;
+
+    &::-webkit-scrollbar {
+      width: 5px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      background: transparent;     
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      border-radius: 20px;       
+      border: 3px solid $gray-scale;  
+    }
+
+    &__item { 
+      @extend %flex-center-y;
+      justify-content: space-between;
+      width: calc(100% - 20px);
+      padding: 5px 10px;
+      background: $dark-color;
+      border-radius: 10px;
+      cursor: pointer;
+
+      &__text {
+        @extend %flex-center-y;
+        gap: 5px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        width: calc(100% - 20px);
+
+        &__name {
+          font-size: 1.5rem;
+          width: fit-content;
+
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+        }
+
+        &__room {
+          font-size: 1.3rem;
+          color: $gray-scale;
+        }
+
+      }
+
+      &__btn {
+        z-index: 16;
+      }
+    }
+
+    &__menssage {
+      font-size: 1.5rem;
+      color: $gray-scale;
+    }
+  }
+}

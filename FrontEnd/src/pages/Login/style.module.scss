@@ -1,0 +1,136 @@
+@import "../../global.scss";
+$mobile-l: 415px;
+$tablet: 768px;
+
+.login {
+  background-image: url(../../assets/Login_Register/background.jpg);
+  background-size:  auto 100vh;
+  background-repeat: no-repeat;
+  background-position: center;
+  overflow-x: hidden;
+  overflow-y: visible;
+  color: $light-color;
+
+  @media screen and (min-width: $mobile-l) {
+    background-image: url(../../assets/Login_Register/background2.jpg);
+  }
+}
+
+.background {
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 100, 125, 0.72);
+  @extend %flex-center;
+}
+
+.main {
+  @extend %flex-column;
+  justify-content: space-around;
+  background-color: rgba(0, 61, 78, 0.85);
+  height: 85vh;
+  width: 70vw;
+  border-radius: 20px;
+  padding: 40px 20px;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: transparent;     
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    border-radius: 20px;       
+    border: 3px solid $dark-color;  
+  }
+  
+  &__welcome {
+    @extend %flex-column;
+    align-items: center;   
+    text-align: center;
+    gap: 2rem;
+    margin-bottom: 20px;
+
+    img {
+      width: 40vw;
+
+      @media screen and (min-width: $tablet) {
+        width: 30vw;
+
+      }
+    }
+
+    &__text {
+      font-size: 2rem;
+      font-weight: 200;
+
+      span {
+        font-weight: 500;
+      }
+    }
+  }
+
+  &__div {
+    background-color: $light-color;
+    width: 80%;
+    height: 2px;
+    border-radius: 2px;
+    margin: 0 auto;
+  }
+
+  &__login {
+    @extend %flex-column;
+    align-items: center;
+    margin-top: 20px;
+
+    &__title {
+      font-size: 3rem;
+      font-weight: 500;
+      margin-bottom: 30px;
+    }
+
+    &__form {
+      @extend %flex-column;
+
+      &__inputs {
+        @extend %flex-column;
+        justify-content: space-around;
+        gap: 20px;
+      }
+    }
+
+    &__button {
+      @extend %button_login_register;
+      margin-top: 3rem;
+    }
+
+    &__link {
+      margin-top: 5px;
+      @extend %link_login_register;
+      text-align: center;
+    }
+  }
+
+  &__social_medias {
+    @extend %flex-column;
+    align-items: center;
+    font-size: 1.4rem;
+    margin-top: 40px;
+
+    &__text {
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    &__imgs {
+      @extend %flex-center-x;
+      gap: 10px;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;  
+    }
+  }
+}
+
