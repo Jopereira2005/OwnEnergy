@@ -17,6 +17,10 @@ public class User : Entity
     [Required]
     public required string Password { get; set; }
 
+    public string? City { get; set; }
+
+    public string? State { get; set; }
+
     public string? ProfilePictureUrl { get; set; }
 
     public ICollection<RefreshToken> Tokens { get; set; } = [];

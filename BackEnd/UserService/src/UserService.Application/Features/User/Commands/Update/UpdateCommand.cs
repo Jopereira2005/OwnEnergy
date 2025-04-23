@@ -9,4 +9,6 @@ public class UpdateCommand : IRequest<Message>
     [JsonIgnore]
     public Guid Id { get; set; }
     public required string Name { get; set; }
+    public required string City { get; set; }
+    public required string State { get; set; }
 }

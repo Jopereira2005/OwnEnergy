@@ -10,4 +10,6 @@ public class CreateCommand(string name, string username, string email, string pa
     public string Username { get; set; } = username;
     public string Email { get; set; } = email;
     public string Password { get; set; } = password;
+    public string? City { get; set; }
+    public string? State { get; set; }
 }
