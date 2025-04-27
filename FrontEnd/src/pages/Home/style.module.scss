@@ -11,41 +11,40 @@
   align-items: center;
   margin: 10px 40px;
 
-  &__search {
-    display: flex;
+  &__buttons {
+    margin: 20px 40px 0;
+    @extend %flex-center;
+    gap: 10px;
     width: 100%;
-    background-color: $secondary-color;
-    border-radius: 25px;
-    padding: 15px;
 
-    @extend %box_shadow;
+    &__button {
+      color: $light-color;
+      border: 2px solid $light-color;
+      background-color: transparent;
+      border-radius: 10px;
+      font-size: 1.8rem;
+      font-weight: 500;
+      width: calc(50% - 5px);
+      height: 40px;
+      max-width: 200px;
+      padding: 0.5rem 0;
+      cursor: pointer;
+      transition: 0.4s;
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 
-    &__search_bar {
-      @extend %flex-center-y;
-
-      &__img {
-        font-size: 2rem;
-        margin-right: 10px;
-      }
-  
-      &__input {
-        width: 100%; 
+      &:hover {
+        transition: 0.4s;
         background-color: transparent;
-        outline: none;
-        border: none;
-        color: $light-color;
-        font-size: 1.4rem;
+        color: $contrast-color;
+        border: 2px solid $contrast-color;
+      }
 
-        &::placeholder {
-          color: $gray-scale;
-        }
+      &__active {
+        transition: 0.4s;
+        color: $contrast-color;
+        border: 2px solid $contrast-color;
       }
     }
-  }
-
-  &__carousel {
-    @extend %flex-center-x;
-    width: 100%;
   }
 
   &__cards {

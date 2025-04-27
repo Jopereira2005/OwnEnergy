@@ -1,146 +1,74 @@
 import { useEffect, useState } from 'react';
-import { SwiperSlide } from 'swiper/react'
-
 import styled from './style.module.scss'
 
 import Header from '../../components/Common/Header'
 import SeachBar from '../../components/Common/SearchBar'
-import Slider from '../../components/Common/Slider'
 import NavBar from '../../components/Common/NavBar'
-import Card from '../../components/Home/Card'
+import MainDevice from '../../components/Home/MainDevice';
 
-import CreateModal from '../../components/Home/CreateModal'
-import CreateRoomModal from '../../components/Home/CreateRoomModal'
 import EditModal from '../../components/Home/EditModal'
-import EditRoomModal from '../../components/Home/EditRoomModal'
 import AlertNotification from '../../components/Common/AlertNotification'
 
-import { Room } from '../../interfaces/Room'
 import { Device } from '../../interfaces/Device'
+import { Room } from '../../interfaces/Room'
 
-import { AddIcon } from '../../assets/Home/Add'
-
-import roomService from '../../services/roomService';
 import deviceService from '../../services/deviceService';
+import roomService from '../../services/roomService';
+import MainGenerator from '../../components/Home/MainGenerator';
 
 function Home() {
   const _ = {  name: "", }
 
-  const [devices, setDevices] = useState<Device[]>([])
-  const [filteredDevices, setfilteredDevices] = useState<Device[]>([]);
-
-  const [rooms, setRooms] = useState<Room[]>([
-    {
-      id: '1',
-      name: "Sala",
-      userId: "1"
-    }, 
-    {
-      id: '2',
-      name: "Cozinha",
-      userId: "1"
-    },
-    {
-      id: '3',
-      name: "Quarto",
-      userId: "1"
-    },
-    {
-      id: '4',
-      name: "Banheiro",
-      userId: "1"
-    }  
+  const [devices, setDevices] = useState<Device[]>([
+    { id: "1", roomId: "1", name: "Dispositivo 1", status: "On"  },
+    { id: "2", roomId: "1", name: "Dispositivo 2", status: "On"  },
+    { id: "3", roomId: "1", name: "Dispositivo 3", status: "On"  },
+    { id: "4", roomId: "2", name: "Dispositivo 4", status: "On"  },
+    { id: "5", roomId: "2", name: "Dispositivo 5", status: "On"  },
+    { id: "6", roomId: "2", name: "Dispositivo 6", status: "On"  },
+    { id: "7", roomId: "3", name: "Dispositivo 7", status: "On"  },
+    { id: "8", roomId: "3", name: "Dispositivo 8", status: "On"  },
+    { id: "9", roomId: "3", name: "Dispositivo 9", status: "On"  }
   ]);
 
-  const [pressTimer, setPressTimer] = useState<NodeJS.Timeout | null>(null);
+  const [rooms, setRooms] = useState<Room[]>([
+    { id: "1", name: "Sala", userId: "1" }, 
+    { id: "2", name: "Cozinha", userId: "1" },
+    { id: "3", name: "Quarto", userId: "1"},
+  ]);
+
   const [alertProps, setAlertProps] = useState({ message: '', timeDuration: 0, type: 'error' as 'success' | 'error'});
   const [alertOpen, setAlertOpen] = useState(false)
 
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isCreateRoomModalOpen, setIsCreateRoomModalOpen] = useState(false);
-  const [isEditRoomModalOpen, setIsEditRoomModalOpen] = useState(false);
-
   const [selectDeviceData, setSelectDeviceData] = useState<Device>(_);
-  const [selectRoomData, setSelectRoomData] = useState<Room>(_);
-  const [selectRoomEditData, setSelectRoomEditData] = useState<Room>(_);
 
-  const toggleCreateModal = () => {
-    setIsCreateModalOpen(!isCreateModalOpen);
-  };
+  const [deviceGenerator, setDeviceGenerator] = useState(true);
 
-  const toggleCreateRoomModal = () => {
-    setIsCreateRoomModalOpen(!isCreateRoomModalOpen);
-  };
 
   const toggleEditModal = () => {
     setIsEditModalOpen(!isEditModalOpen);
   };
 
-  const toggleEditRoomModal = () => {
-    setIsEditRoomModalOpen(!isEditRoomModalOpen);
-  };
-
-  const listDeviceByRoom = async () => {
-    try {
-      let response: any = '';
-      if(selectRoomData.id) {
-        response = await deviceService.list_device_by_room(selectRoomData.id);
-      }
-      setfilteredDevices(response.data.items);
-    } catch (error) {
-      setfilteredDevices([]);
-    }
-  }
-
-  const listDevice = async () => {
+  const loadDevices = async () => {
     try {
       const response = await deviceService.list_device();
-      const items = response.data?.items || [];
-
-      const devices = items.filter((device: Device) => 
-        rooms.some(room => room.id === device.roomId)
-      );
+      const devices = response.data?.items || [];
 
       setDevices(devices);
     } catch (error) {
-      setDevices([]);
+      // setDevices([]);
     }
   }
 
-  const deleteDevice = async ( id: string ) => {
+  const loadRooms = async () => {
     try {
-      await deviceService.delete_device(id);
-      toggleAlertOpen(3000, "Dispositivo deletado com sucesso", "success");
-      listDevice()
-      listDeviceByRoom()
+      const response = await roomService.list_rooms();
+      setRooms(response.data.items || [])
     } catch (error) {
-      setDevices([]);
+      setRooms([]);
     }
-  }
-
-  const createDevice = async (formData: FormData) => {
-    const nome = formData.get('name');
-    const ajustavel = formData.get('dimmable'); 
-
-    try {
-      await deviceService.create_device(selectRoomData.id || '', String(nome), Boolean(ajustavel));
-      listDevice();
-      listDeviceByRoom();
-    } catch (error) {
-      return error;
-    }
-
   };
-
-  const changeDeviceState = async( id: string) => {
-    try {
-      await deviceService.device_switch( id );
-      listRooms()
-    } catch(error: any) {
-      toggleAlertOpen(3000, "Erro ao tentar mudar o estado do dispositivo.", "error")
-    }
-  }
 
   const editDevice = async (data: FormData, id: string) => {
     const name = String(data.get('name')).trim();
@@ -161,91 +89,25 @@ function Home() {
       toggleAlertOpen(3000, "Dispositivo alterado com sucesso", "success");
     }
 
-    listDevice();
-    listDeviceByRoom();
+    loadDevices();
   };
+
+  const deleteDevice = async ( id: string ) => {
+    try {
+      await deviceService.delete_device(id);
+      toggleAlertOpen(3000, "Dispositivo deletado com sucesso", "success");
+      loadDevices()  
+    } catch (error) {
+      // setDevices([]);
+    }
+  }
 
   const sendDeviceData = (id: string) => {
     const selectedCard = devices.find((device: Device) => device.id === id);
     if (selectedCard) 
       setSelectDeviceData(selectedCard);
   }
-
-  const listRooms = async () => {
-    try {
-      const response = await roomService.list_rooms();
-      setRooms(response.data.items || [])
-    } catch (error) {
-      setRooms([]);
-    }
-  };
-
-  const deleteRoom = async ( id: string ) => {
-    try {
-      await roomService.delete_room(id);
-      toggleAlertOpen(3000, "Ambiente deletado com sucesso", "success");
-      listRooms();
-      setSelectRoomData(_);
-    } catch (error) {
-      setDevices([]);
-    }
-  }
-
-  const createRoom = async (formData: FormData) => {
-    const name = formData.get('name');
-    
-    try {
-      const response = await roomService.create_room( String(name).trim() );
-      if(response.error) 
-        throw response.error
-      listRooms()
-    } catch(error: any) {
-      toggleAlertOpen(3000, error, "error")
-    }
-  };
   
-  const editRoom = async (data: FormData, id: string) => {
-    const name = String(data.get('name')).trim();
-
-    try {
-      if(selectRoomData.name !== name) {
-        const response = await roomService.update_room( id, String(name).trim() )
-        if(response.error)
-          throw response.error
-
-        toggleAlertOpen(3000, "Ambiente atualizado com sucesso.", "success")
-        selectRoomData.id === id && setSelectRoomData({
-          name: String(name).trim(),
-        }) 
-      }    
-      listRooms()
-      
-    } catch(error: any) {
-      toggleAlertOpen(3000, error, "error")
-    }
-  };
-
-  const sendRoomData = (id_room: string | null) => {
-    const selectedRoom = rooms.find((room: Room) => room.id === id_room);
-    if(selectedRoom !== selectRoomData) 
-      setSelectRoomData(selectedRoom || _);  
-  }
-
-  const handleMouseDown = (room: Room) => {
-    const timer = setTimeout(() => {
-      setSelectRoomEditData(room || _)
-      toggleEditRoomModal()
-    }, 1500);
-    setPressTimer(timer);
-  };
-
-  const handleMouseUp = () => {
-    if(pressTimer) {
-      clearTimeout(pressTimer);
-      setPressTimer(null);
-    }
-  };
-
   const toggleAlertOpen = ( timeDuration: number, message: string, type: 'success' | 'error') => {
     setAlertProps({
       message: message,
@@ -253,17 +115,17 @@ function Home() {
       type: type,
     })
     setAlertOpen(true);
+  };
+
+  const switchDeviceGenerator = ( option: boolean ) => {
+    if( deviceGenerator != option )
+      setDeviceGenerator(option);
   }
-
+  
   useEffect(() => {
-    listRooms();
-    listDevice();
-  }, [])
-
-  useEffect(() => {
-    listDevice()
-    listDeviceByRoom()
-  }, [selectRoomData]);
+    loadDevices();
+    loadRooms();
+  }, []);
 
   return (
     <div className={ styled.home }>
@@ -275,61 +137,23 @@ function Home() {
           handleModalFunc={ toggleEditModal }
           sendData={ sendDeviceData }
         />
-        <div className={ styled.main__carousel }>
-          <Slider onSlideChangeFunc={ sendRoomData }>
-            <SwiperSlide><button className="create_button" onClick={ toggleCreateRoomModal }>Criar <AddIcon className="create_button__icon"/></button></SwiperSlide>
-            { rooms.map((room) => (
-              <SwiperSlide
-                key={ room.id }
-                data-id={ room.id }   
-              ><button
-                onMouseDown={() => handleMouseDown(room)}
-                onMouseUp={ handleMouseUp }
-                onMouseLeave={ handleMouseUp }
-                onTouchStart={ () => handleMouseDown(room) }
-                onTouchEnd={ handleMouseUp }
-              >{ room.name }</button>
-              </SwiperSlide>
-            ))}
-          </Slider>
+
+        <div className={ styled.main__buttons }>
+          <button className={ `${styled.main__buttons__button} ${ deviceGenerator ? styled.main__buttons__button__active : '' }` } onClick={() => switchDeviceGenerator(true)} >Dispositivos</button>
+          <button className={ `${styled.main__buttons__button} ${ !deviceGenerator ? styled.main__buttons__button__active : '' }`} onClick={() => switchDeviceGenerator(false)}>Geradores</button>
         </div>
-        <div className={ styled.main__cards }>
-          <div className={ styled.main__cards__header }>
-            { selectRoomData.name !== '' ? 
-               <h1 className={ styled.main__cards__header__text }>{ selectRoomData.name }</h1> : 
-               <h1 className={ styled.main__cards__menssage} >Selecione algum ambiente ;)</h1>
-            }       
-            { selectRoomData.name !== '' && <AddIcon onClick={ toggleCreateModal } className={ styled.main__cards__header__icon }/>}
-             
-          </div>
-            { (filteredDevices.length == 0 && selectRoomData.name !== '') ? 
-              <h1 className={ styled.main__cards__menssage} >Cadastre algum dispositivo para começar ;)</h1>
-            : undefined}
-          <div className={ styled.main__cards__body }>
-            { filteredDevices.map((device) => (
-              <Card 
-                device={ device }
-                chanceStateFunc={ changeDeviceState }
-                onClickFunc = { toggleEditModal }
-                sendData={ sendDeviceData }
-              />
-            ))}
-          </div>
-        </div>
+        
+        <MainDevice
+          listRooms = { rooms }
+          listDevices = { devices }
+          isOpen={ deviceGenerator }
+          loadRooms = { loadRooms }
+          loadDevices = { loadDevices }
+        />
+         
+        {/* <MainGenerator />  */}
       </main>
       <NavBar />
-      <CreateModal 
-        isOpen={ isCreateModalOpen } 
-        toggleCreateModal={ toggleCreateModal } 
-        onSubmit={ createDevice }
-      />
-
-      <CreateRoomModal 
-        isOpen={ isCreateRoomModalOpen } 
-        toggleCreateRoomModal={ toggleCreateRoomModal } 
-        onSubmit={ createRoom }
-      />
-
       <EditModal
         device={ selectDeviceData }
         rooms={ rooms }
@@ -337,14 +161,6 @@ function Home() {
         toggleEditModal={ toggleEditModal }
         deleteDeviceFunc={ deleteDevice }
         onSubmit={ editDevice }
-      />
-
-      <EditRoomModal
-        room={ selectRoomEditData }
-        isOpen={ isEditRoomModalOpen }
-        toggleEditRoomModal={ toggleEditRoomModal }
-        deleteRoomFunc={ deleteRoom }
-        onSubmit={ editRoom }
       />
 
       <AlertNotification
