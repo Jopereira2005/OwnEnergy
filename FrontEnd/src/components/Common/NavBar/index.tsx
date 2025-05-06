@@ -21,7 +21,6 @@ const NavBar = () => {
   }
 
   return (
-    <div className={ styled.container }>
       <nav className={ styled.navbar }>
         <div onClick={() => handlePage('/rotina')} className={ page == "/rotina" ? styled.navbar__item_active : styled.navbar__item }>
           <RoutineIcon className={ styled.icon }/>
@@ -43,7 +42,6 @@ const NavBar = () => {
           <h1 className={ styled.text }>Dashboard</h1>
         </div>
       </nav>
-    </div>
   )
 }
 
