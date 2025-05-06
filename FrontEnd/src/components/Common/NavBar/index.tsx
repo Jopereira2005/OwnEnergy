@@ -37,7 +37,7 @@ const NavBar = () => {
           <h1 className={ styled.text }>News</h1>
         </div>
 
-        <div onClick={() => handlePage('/')} className={ page == "/dashboard" ? styled.navbar__item_active : styled.navbar__item }>
+        <div onClick={() => handlePage('/dashboard')} className={ page == "/dashboard" ? styled.navbar__item_active : styled.navbar__item }>
           <DashboardIcon className={ styled.icon }/>
           <h1 className={ styled.text }>Dashboard</h1>
         </div>

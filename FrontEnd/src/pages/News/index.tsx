@@ -7,7 +7,7 @@ import NavBar from '../../components/Common/NavBar'
 
 import { SearchIcon } from '../../assets/Home/Search'
 
-function Home() {
+function News() {
   const [inputValue, setInputValue] = useState('');
     
   const listaRef = useRef<HTMLDivElement | null>(null);
@@ -73,4 +73,4 @@ function Home() {
   )
 }
 
-export default Home
+export default News
