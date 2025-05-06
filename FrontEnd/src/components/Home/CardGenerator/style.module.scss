@@ -1,6 +1,7 @@
 @use "../../../global.scss" as *;
 
 .card {
+  min-width: 240px;
   height: 100px;
   background-color: $secondary-color;
   border-radius: 20px;
@@ -45,6 +46,7 @@
       }
 
       &__icon {
+        padding-left: 5px;
         height: 25px;
       }
     }
