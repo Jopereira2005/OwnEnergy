@@ -5,7 +5,7 @@ import styled from './style.module.scss'
 import Header from '../../components/Common/Header'
 import NavBar from '../../components/Common/NavBar'
 
-import { SearchIcon } from '../../assets/Home/Search'
+import { SearchIcon } from '../../assets/Common/Search'
 
 function News() {
   const [inputValue, setInputValue] = useState('');

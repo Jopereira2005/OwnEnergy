@@ -1,7 +1,6 @@
 @use "../../global.scss" as *;
 
 .home {
-  background-color: $dark-color;
   color: $light-color;
   min-height: 100vh;
 }
@@ -30,6 +29,7 @@
         font-size: 3.5rem;
         transition: 0.3s;
         cursor: pointer;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 
         &:hover {
           color: $contrast-color;
