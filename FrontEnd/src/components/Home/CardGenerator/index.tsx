@@ -1,12 +1,10 @@
 import { useState } from 'react';
-
 import styled from './style.module.scss'
 
 import Switch from '../../Common/Switch'
 
-import { MoreIcon } from '../../../assets/Cards/More';
-
-import FolhaIcon from '../../../assets/Home/Folha.svg'
+import { MoreIcon } from '../../../assets/Common/More';
+import FolhaIcon from '../../../assets/Common/Folha.svg';
 
 import { Device } from '../../../interfaces/Device';
 

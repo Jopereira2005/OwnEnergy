@@ -4,7 +4,7 @@ import styled from './style.module.scss'
 
 import Switch from '../../Common/Switch'
 
-import { MoreIcon } from '../../../assets/Cards/More';
+import { MoreIcon } from '../../../assets/Common/More';
 
 import { Device } from '../../../interfaces/Device';
 

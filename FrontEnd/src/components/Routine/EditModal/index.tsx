@@ -7,7 +7,7 @@ import InputSelect from '../../Common/InputSelect';
 import { Room } from '../../../interfaces/Room'
 import { Routine } from '../../../interfaces/Routine';
 
-import { TrashIcon } from '../../../assets/Home/Trash'
+import { TrashIcon } from '../../../assets/Common/Trash'
 
 
 interface EditModalProps {

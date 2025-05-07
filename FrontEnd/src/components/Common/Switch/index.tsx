@@ -1,6 +1,6 @@
 import styled from './style.module.scss'
 
-import { OnIcon } from "../../../assets/Cards/On"
+import { OnIcon } from "../../../assets/Common/On"
 
 interface SwichProp {
   state: boolean,

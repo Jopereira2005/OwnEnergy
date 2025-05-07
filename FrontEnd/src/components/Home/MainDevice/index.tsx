@@ -15,7 +15,7 @@ import AlertNotification from '../../Common/AlertNotification'
 import { Room } from '../../../interfaces/Room'
 import { Device } from '../../../interfaces/Device'
 
-import { AddIcon } from '../../../assets/Home/Add'
+import { AddIcon } from '../../../assets/Common/Add'
 
 import roomService from '../../../services/roomService';
 import deviceService from '../../../services/deviceService';

@@ -7,7 +7,7 @@ import CardGenerator from '../CardGenerator'
 
 import { Generator } from '../../../interfaces/Generator'
 
-import { AddIcon } from '../../../assets/Home/Add'
+import { AddIcon } from '../../../assets/Common/Add'
 
 import deviceService from '../../../services/deviceService';
 

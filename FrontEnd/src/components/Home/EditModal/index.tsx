@@ -7,7 +7,7 @@ import InputSelect from '../../Common/InputSelect';
 import { Room } from '../../../interfaces/Room'
 import { Device } from '../../../interfaces/Device'
 
-import { TrashIcon } from '../../../assets/Home/Trash'
+import { TrashIcon } from '../../../assets/Common/Trash'
 
 interface EditModalProps {
   device: Device,
