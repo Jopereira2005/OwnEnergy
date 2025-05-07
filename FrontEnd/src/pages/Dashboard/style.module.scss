@@ -1,7 +1,6 @@
 @use "../../global.scss" as *;
 
 .home {
-  background-color: $dark-color;
   color: $light-color;
   min-height: 100vh;
 }
@@ -9,113 +8,52 @@
 .main {
   @extend %flex-column;
   align-items: center;
-  margin: 10px 40px;
+  margin: 20px 40px 10px;
 
-  &__search {
-    position: relative;
+  &__title {
     width: 100%;
-    @extend %flex-column;
-    justify-content: center;
-  
-    &__search_bar {
-      @extend %flex-center-y;
-      width: calc(100% - 30px);
-      background-color: $secondary-color;
-      border-radius: 25px;
-      padding: 15px;
-      @extend %box_shadow;
-  
-  
-      &__img {
-        font-size: 2rem;
-        margin-right: 10px;
-      }
-  
-      &__input {
-        width: 100%; 
-        background-color: transparent;
-        outline: none;
-        border: none;
-        color: $light-color;
-        font-size: 1.5rem;
-  
-        &::placeholder {
-          color: $gray-scale;
-        }
-      }
+    @extend %flex-center-y;
+    justify-content: space-between;
+    margin-bottom: 40px;
+
+    &__text {
+      font-size: 3.5rem;
+      font-weight: 500;
     }
-  
-    &__list {
-      position: absolute;
-      top: 50px;
-      z-index: 15;
-      @extend %flex-column;
-      max-height: 350px;
-      overflow-y: auto;
-      margin-top: 10px;
-      list-style: none;
-      width: calc(100% - 30px);
-      background-color: $secondary-color;
-      border-radius: 25px;
-      padding: 15px 15px 15px 15px;
-      gap: 5px;
-      @extend %box_shadow;
-  
-      &::-webkit-scrollbar {
-        width: 5px;
-      }
-      
-      &::-webkit-scrollbar-track {
-        background: transparent;     
-      }
-      
-      &::-webkit-scrollbar-thumb {
-        border-radius: 20px;       
-        border: 3px solid $gray-scale;  
-      }
-  
-      &__item { 
-        @extend %flex-center-y;
-        justify-content: space-between;
-        width: calc(100% - 20px);
-        padding: 5px 10px;
-        background: $dark-color;
-        border-radius: 10px;
-        cursor: pointer;
-  
-        &__text {
-          @extend %flex-center-y;
-          gap: 5px;
-          text-overflow: ellipsis;
-          overflow: hidden;
-          white-space: nowrap;
-          width: calc(100% - 20px);
-  
-          &__name {
-            font-size: 1.5rem;
-            width: fit-content;
-  
-            text-overflow: ellipsis;
-            overflow: hidden;
-            white-space: nowrap;
-          }
-  
-          &__room {
-            font-size: 1.3rem;
-            color: $gray-scale;
-          }
-  
-        }
-  
-        &__btn {
-          z-index: 16;
-        }
-      }
-  
-      &__menssage {
-        font-size: 1.5rem;
-        color: $gray-scale;
+
+    &__icon {
+      font-size: 3.5rem;
+      transition: 0.3s;
+      cursor: pointer;
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+
+      &:hover {
+        color: $contrast-color;
+        transition: 0.3s;
       }
     }
   }
+
+  &__body {
+    &__consumption {
+      width: 100%;
+      margin-bottom: 20px;
+      
+      &__title {
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+
+      &__cards {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(100px, 300px));
+        grid-column-gap: 10px;
+        grid-row-gap: 10px;
+        justify-content: center;
+      }
+    }
+  }
+
+
 }
