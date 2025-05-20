@@ -3,6 +3,7 @@ export interface Device {
   roomId?: string,
   name: string,
   isDimmable?: boolean,
-  brightness?: number,
-  status?: string,
+  intensity?: number,
+  power?: number,
+  status?: string
 }

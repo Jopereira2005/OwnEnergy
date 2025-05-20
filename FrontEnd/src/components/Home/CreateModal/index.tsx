@@ -3,12 +3,13 @@ import React, { useEffect, useState } from 'react';
 import styled from './style.module.scss'
 
 interface CreateModalProps {
+  type: "device" | "generator";
   isOpen: boolean;
-  toggleCreateModal: () => void
+  toggleCreateModal: () => void;
   onSubmit: (dados: FormData) => void;
 }
 
-const CreateModal = ({ isOpen, toggleCreateModal, onSubmit }: CreateModalProps) => {
+const CreateModal = ({ type, isOpen, toggleCreateModal, onSubmit }: CreateModalProps) => {
   useEffect(() => {
     if (isOpen) {
       document.body.classList.add("no_scroll");
@@ -45,17 +46,17 @@ const CreateModal = ({ isOpen, toggleCreateModal, onSubmit }: CreateModalProps) 
         <form onSubmit={ handleSubmit } className={ styled.modal__form }>
           <div className={ styled.modal__form__container_input}>
             <div className={ styled.modal__form__container_input__input}>
-                <label htmlFor="nome">Nome: </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={ name }
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Digite o nome do dispositivo..."
-                  required
-                  autoComplete="off"
-                /> 
+              <label htmlFor="nome">Nome: </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={ name }
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Digite o nome do dispositivo..."
+                required
+                autoComplete="off"
+              /> 
             </div>
 
             <div className={ styled.modal__form__container_input__switch}>
@@ -72,7 +73,6 @@ const CreateModal = ({ isOpen, toggleCreateModal, onSubmit }: CreateModalProps) 
               </label>
             </div>
           </div>
-
           <button type="submit" className={ styled.modal__form__button }>Criar</button>
         </form>
       </div>

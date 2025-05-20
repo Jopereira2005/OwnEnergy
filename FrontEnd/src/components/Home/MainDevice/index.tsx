@@ -4,7 +4,7 @@ import { SwiperSlide } from 'swiper/react'
 import styled from './style.module.scss'
 
 import Slider from '../Slider'
-import Card from '../Card'
+import CardDevice from '../CardDevice'
 
 import CreateModal from '../../Home/CreateModal'
 import CreateRoomModal from '../../Home/CreateRoomModal'
@@ -15,7 +15,7 @@ import AlertNotification from '../../Common/AlertNotification'
 import { Room } from '../../../interfaces/Room'
 import { Device } from '../../../interfaces/Device'
 
-import { AddIcon } from '../../../assets/Home/Add'
+import { AddIcon } from '../../../assets/Common/Add'
 
 import roomService from '../../../services/roomService';
 import deviceService from '../../../services/deviceService';
@@ -23,15 +23,14 @@ import deviceService from '../../../services/deviceService';
 interface mainDeviceProps {
   listDevices: Device[],
   listRooms: Room[],
-  isOpen: boolean,
-  loadDevices: () => Promise<void>
+  toggleCreateModal: () => void,
+  openEditModal: () => void,
+  loadDevices: () => Promise<void>,
   loadRooms: () => Promise<void>
 }
 
-const MainDevice = ({listDevices, listRooms, isOpen, loadDevices, loadRooms}: mainDeviceProps) => {
+const MainDevice = ({listDevices, listRooms, toggleCreateModal, openEditModal, loadDevices, loadRooms}: mainDeviceProps) => {
   const _ = {  name: "", }
-
-  const itemRef = useRef<HTMLDivElement>(null);
 
   const [devices, setDevices] = useState<Device[]>(listDevices);
   const [rooms, setRooms] = useState<Room[]>(listRooms);
@@ -50,16 +49,8 @@ const MainDevice = ({listDevices, listRooms, isOpen, loadDevices, loadRooms}: ma
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isEditRoomModalOpen, setIsEditRoomModalOpen] = useState(false);
 
-  const toggleCreateModal = () => {
-    setIsCreateModalOpen(!isCreateModalOpen);
-  };
-
   const toggleCreateRoomModal = () => {
     setIsCreateRoomModalOpen(!isCreateRoomModalOpen);
-  };
-
-  const toggleEditModal = () => {
-    setIsEditModalOpen(!isEditModalOpen);
   };
 
   const toggleEditRoomModal = () => {
@@ -89,7 +80,7 @@ const MainDevice = ({listDevices, listRooms, isOpen, loadDevices, loadRooms}: ma
     }
   };
 
-  const createDevice = async (formData: FormData) => {
+  const createDevice = async (formData: FormData ) => {
     const nome = formData.get('name');
     const ajustavel = formData.get('dimmable'); 
 
@@ -103,7 +94,7 @@ const MainDevice = ({listDevices, listRooms, isOpen, loadDevices, loadRooms}: ma
 
   };
 
-  const changeDeviceState = async( id: string) => {
+  const changeDeviceState = async( id: string ) => {
     try {
       await deviceService.device_switch( id );
       loadDevices()
@@ -115,19 +106,20 @@ const MainDevice = ({listDevices, listRooms, isOpen, loadDevices, loadRooms}: ma
   const editDevice = async (data: FormData, id: string) => {
     const name = String(data.get('name')).trim();
     const room = String(data.get('room'));
-    const brightness = Number(data.get('brightness')); 
+    const intensity = Number(data.get('intensity')); 
     
     if(selectDeviceData.name !== name)  {
       await deviceService.update_device_name(id, name);
       toggleAlertOpen(3000, "Dispositivo alterado com sucesso", "success");
     }
+    
     if(selectDeviceData.roomId !== room) {
       await deviceService.update_device_room(id, room);
       toggleAlertOpen(3000, "Dispositivo alterado com sucesso", "success");
     }
 
-    if(selectDeviceData.brightness !== brightness) {
-      await deviceService.update_device_dim(id, brightness);
+    if(selectDeviceData.intensity !== intensity) {
+      await deviceService.update_device_dim(id, intensity);
       toggleAlertOpen(3000, "Dispositivo alterado com sucesso", "success");
     }
 
@@ -222,26 +214,9 @@ const MainDevice = ({listDevices, listRooms, isOpen, loadDevices, loadRooms}: ma
       item.roomId == selectRoomData.id));
   }, [ selectRoomData, devices, rooms ]);
 
-  useEffect(() => {
-    const main = itemRef.current;
-    if (isOpen) {
-      main!.style.display = 'flex';
-      requestAnimationFrame(() => { // o requestAnimationFrame espera 10ms pra ativar, se não o navegar ignora a animação
-        main!.classList.remove(styled.main_device__closed);
-      });
-    } else {
-      main!.classList.add(styled.main_device__closed);
-      setTimeout(() => {
-        if (itemRef.current) {
-          itemRef.current.style.display = 'none';
-        }
-      }, 500);
-    }
-  }, [ isOpen ]);
-
   return (
     <>
-      <div ref={ itemRef } className={ styled.main_device }>
+      <div className={ styled.main_device }>
         <div className={ styled.main_device__carousel }>
           <Slider onSlideChangeFunc={ sendRoomData }>
             <SwiperSlide><button className="create_button" onClick={ toggleCreateRoomModal }>Criar <AddIcon className="create_button__icon"/></button></SwiperSlide>
@@ -274,36 +249,22 @@ const MainDevice = ({listDevices, listRooms, isOpen, loadDevices, loadRooms}: ma
             : undefined }
           <div className={ styled.main_device__cards__body }>
             { filteredDevices.map((device) => (
-              <Card
+              <CardDevice
                 key={ device.id }
                 device={ device }
                 chanceStateFunc={ changeDeviceState }
-                onClickFunc = { toggleEditModal }
+                onClickFunc = { openEditModal }
                 sendData={ sendDeviceData }
               />
             ))}
           </div>
         </div>
       </div>
-      <CreateModal 
-        isOpen={ isCreateModalOpen } 
-        toggleCreateModal={ toggleCreateModal } 
-        onSubmit={ createDevice }
-      />
 
       <CreateRoomModal 
         isOpen={ isCreateRoomModalOpen } 
         toggleCreateRoomModal={ toggleCreateRoomModal } 
         onSubmit={ createRoom }
-      />
-
-      <EditModal
-        device={ selectDeviceData }
-        rooms={ rooms }
-        isOpen={ isEditModalOpen }
-        toggleEditModal={ toggleEditModal }
-        deleteDeviceFunc={ deleteDevice }
-        onSubmit={ editDevice }
       />
 
       <EditRoomModal

@@ -3,11 +3,7 @@
 .main_device {
   width: 100%;
   align-items: center;
-  margin: 10px 40px;
   @extend %flex-column;
-  transition: transform 0.5s ease, opacity 0.5s ease;
-  transform: translateX(0);
-  opacity: 1;
 
   &__carousel {
     @extend %flex-center-x;
@@ -57,10 +53,5 @@
       font-weight: 400;
       color: $gray-scale;
     }
-  }
-
-  &__closed {
-    transform: translateX(-120%);
-    opacity: 0;
   }
 }

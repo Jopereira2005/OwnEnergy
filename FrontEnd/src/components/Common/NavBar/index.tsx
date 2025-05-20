@@ -21,7 +21,6 @@ const NavBar = () => {
   }
 
   return (
-    <div className={ styled.container }>
       <nav className={ styled.navbar }>
         <div onClick={() => handlePage('/rotina')} className={ page == "/rotina" ? styled.navbar__item_active : styled.navbar__item }>
           <RoutineIcon className={ styled.icon }/>
@@ -38,12 +37,11 @@ const NavBar = () => {
           <h1 className={ styled.text }>News</h1>
         </div>
 
-        <div onClick={() => handlePage('/')} className={ page == "/dashboard" ? styled.navbar__item_active : styled.navbar__item }>
+        <div onClick={() => handlePage('/dashboard')} className={ page == "/dashboard" ? styled.navbar__item_active : styled.navbar__item }>
           <DashboardIcon className={ styled.icon }/>
           <h1 className={ styled.text }>Dashboard</h1>
         </div>
       </nav>
-    </div>
   )
 }
 

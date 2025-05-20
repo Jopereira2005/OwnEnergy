@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import styled from './style.module.scss'
 
-import { SearchIcon } from '../../../assets/Home/Search'
+import { SearchIcon } from '../../../assets/Common/Search'
 
 import Switch from '../../Common/Switch'
 

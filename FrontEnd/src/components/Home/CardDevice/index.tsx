@@ -4,7 +4,7 @@ import styled from './style.module.scss'
 
 import Switch from '../../Common/Switch'
 
-import { MoreIcon } from '../../../assets/Cards/More';
+import { MoreIcon } from '../../../assets/Common/More';
 
 import { Device } from '../../../interfaces/Device';
 
@@ -15,7 +15,7 @@ interface CardProps {
   sendData: ( id_device: string ) => void;
 }
 
-const Card = ({ device, onClickFunc, chanceStateFunc, sendData}: CardProps) => {
+const CardDevice = ({ device, onClickFunc, chanceStateFunc, sendData }: CardProps) => {
   const [isOn, setIsOn] = useState(device.status != 'Off');
 
   const toggleSwitch = () => {
@@ -39,4 +39,4 @@ const Card = ({ device, onClickFunc, chanceStateFunc, sendData}: CardProps) => {
   )
 }
 
-export default Card
+export default CardDevice

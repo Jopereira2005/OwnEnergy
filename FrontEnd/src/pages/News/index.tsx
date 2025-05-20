@@ -6,9 +6,9 @@ import Header from '../../components/Common/Header'
 import NavBar from '../../components/Common/NavBar'
 import Card from '../../components/News/Card'
 
-import { SearchIcon } from '../../assets/Home/Search'
+import { SearchIcon } from '../../assets/Common/Search'
 
-function Home() {
+function News() {
   const [inputValue, setInputValue] = useState('');
     
   const listaRef = useRef<HTMLDivElement | null>(null);
@@ -127,4 +127,4 @@ function Home() {
   )
 }
 
-export default Home
+export default News

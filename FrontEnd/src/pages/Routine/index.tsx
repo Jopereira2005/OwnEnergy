@@ -5,7 +5,7 @@ import SeachBar from '../../components/Common/SearchBar'
 import NavBar from '../../components/Common/NavBar'
 import Card from '../../components/Routine/Card'
 
-import { AddIcon } from '../../assets/Home/Add'
+import { AddIcon } from '../../assets/Common/Add'
 import { useState } from 'react'
 import type { Routine } from '../../interfaces/Routine'
 import { Room } from '../../interfaces/Room'

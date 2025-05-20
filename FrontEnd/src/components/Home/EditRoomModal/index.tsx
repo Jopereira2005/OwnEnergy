@@ -4,7 +4,7 @@ import styled from './style.module.scss'
 
 import { Room } from '../../../interfaces/Room'
 
-import { TrashIcon } from '../../../assets/Home/Trash'
+import { TrashIcon } from '../../../assets/Common/Trash'
 
 interface EditRoomModalProps {
   room: Room,

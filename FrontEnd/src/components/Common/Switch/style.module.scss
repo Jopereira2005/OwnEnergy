@@ -16,21 +16,22 @@
   &__text {
     font-size: 12px;
     font-weight: 500;
+    padding: 0 2px;
     color: $light-color;
     transition: 0.3s ease;
   }
 
   &__icon {
     @extend %flex-center;
-    width: 19px;
-    height: 19px;
+    width: 18px;
+    height: 18px;
     color: $contrast-color;
     transition: 0.3s ease;
     border: 2px solid $contrast-color;
     border-radius: 50%;
 
     svg {
-      font-size: 17px;
+      font-size: 16px;
       font-weight: 900;
     }
     
@@ -42,12 +43,11 @@
 
   &__active {
     .switch__icon {
-      transform: translateX(-28px);
-
+      transform: translateX(-27px);
     }
 
     .switch__text {
-      transform: translateX(30px);
+      transform: translateX(29px);
       transition: 0.3s ease;
     }
   }

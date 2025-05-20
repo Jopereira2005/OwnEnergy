@@ -1,24 +1,19 @@
-@use "../../global.scss" as *;
+@use "../../../global.scss" as *;
 
-.home {
-  color: $light-color;
-  min-height: 100vh;
-}
-
-.main {
-  @extend %flex-column;
+.main_generator {
+  width: 100%;
   align-items: center;
-  margin: 10px 40px;
+  @extend %flex-column;
 
   &__cards {
     width: 100%;
     margin-top: 10px;
     margin-bottom: 120px;
-    
 
     &__header {
       @extend %flex-center-y;
       justify-content: space-between;
+      margin-bottom: 20px;
 
       &__text {
         font-size: 3.5rem;
@@ -45,6 +40,12 @@
       grid-row-gap: 10px;
       margin-top: 20px;
       justify-content: center;
+    }
+
+    &__menssage {
+      font-size: 2rem;
+      font-weight: 400;
+      color: $gray-scale;
     }
   }
 }

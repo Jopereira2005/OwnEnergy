@@ -8,16 +8,16 @@
   width: 100px;
 }
 
-.container {
-  @extend %flex-center-x;
-}
-
 .navbar {
-  @extend %flex-center-y;
-  justify-content: space-between;
   position: fixed;
+  left: 50%;
+  right: 0;
   bottom: 0;
   z-index: 10;
+  transform: translateX(calc(-50% - 40px));
+  
+  @extend %flex-center-y;
+  justify-content: space-between;
 
   background-color: $secondary-color;
   width: calc(100% - 80px);

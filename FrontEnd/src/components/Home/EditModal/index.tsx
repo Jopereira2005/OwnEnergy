@@ -7,18 +7,18 @@ import InputSelect from '../../Common/InputSelect';
 import { Room } from '../../../interfaces/Room'
 import { Device } from '../../../interfaces/Device'
 
-import { TrashIcon } from '../../../assets/Home/Trash'
+import { TrashIcon } from '../../../assets/Common/Trash'
 
 interface EditModalProps {
   device: Device,
   rooms: Room[],
   isOpen: boolean,
-  toggleEditModal: () => void,
+  closeEditModal: () => void,
   deleteDeviceFunc: ( id: string ) => Promise<void>,
   onSubmit: (dados: FormData, id: string) => void,
 }
 
-const EditModal = ({ device, rooms, isOpen, toggleEditModal, deleteDeviceFunc, onSubmit }: EditModalProps) => {
+const EditModal = ({ device, rooms, isOpen, closeEditModal, deleteDeviceFunc, onSubmit }: EditModalProps) => {
   useEffect(() => {
     if (isOpen) {
       document.body.classList.add("no_scroll");
@@ -45,14 +45,14 @@ const EditModal = ({ device, rooms, isOpen, toggleEditModal, deleteDeviceFunc, o
   const setDefaultData = () => {
     setName(device.name ?? '');
     setRoomId(device.roomId ?? '');
-    setBrightness(device.brightness ?? 100);
+    setBrightness(device.intensity ?? 100);
   }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     onSubmit(formData, device.id || '');
-    toggleEditModal();
+    closeEditModal();
   }
   
   const handleDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -60,7 +60,7 @@ const EditModal = ({ device, rooms, isOpen, toggleEditModal, deleteDeviceFunc, o
     if (device.id) {
       deleteDeviceFunc(device.id);
     }
-    toggleEditModal();
+    closeEditModal();
   }
 
   return (
@@ -117,7 +117,7 @@ const EditModal = ({ device, rooms, isOpen, toggleEditModal, deleteDeviceFunc, o
           </div>
         </form>
       </div>
-      { isOpen && <div className={ styled.backdrop } onClick={ toggleEditModal }></div> }
+      { isOpen && <div className={ styled.backdrop } onClick={ closeEditModal }></div> }
     </> 
   )
 }
