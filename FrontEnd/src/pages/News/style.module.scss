@@ -10,6 +10,7 @@
   @extend %flex-column;
   align-items: center;
   margin: 10px 40px;
+  padding-bottom: 70px;
 
   &__search {
     position: relative;
@@ -118,4 +119,11 @@
       }
     }
   }
+}
+
+.page_title {
+  font-size: 35px;
+  padding: 20px 0px 20px 0;
+  align-self: flex-start;
+  font-weight: 500;
 }

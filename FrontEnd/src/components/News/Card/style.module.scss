@@ -1,0 +1,65 @@
+@use "../../../global.scss" as *;
+
+.newsCard {
+  display: flex;
+  flex-direction: column;
+  background-color: $secondary-color;
+  border-radius: 10px;
+  padding: 20px 15px;
+  color: #ffffff;
+  gap: 20px;
+  margin-bottom: 27px;
+}
+
+.newsCard__title {
+  font-size: 18px;
+  font-weight:700;
+  line-height: normal;
+}
+
+.newsCard__subtitle {
+  color: $light-color;
+  font-size: 12px;
+}
+
+.newsCard__meta {
+  font-size: 10px;
+  font-weight: 600;
+  color: $light-color;
+}
+
+.newsCard__date {
+  color: rgb(184, 182, 182); //ARRUMAR / ADICIONAR COR?
+  font-weight: normal;
+}
+
+.newsCard__image {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+
+.newsCard__caption {
+  font-size: 10px;
+  color: $light-color;
+  margin-top: -6px;
+}
+
+.newsCard__body {
+  font-size: 10px;
+  color: $light-color;
+}
+
+.newsCard__button {
+  // align-self: flex;
+  align-self: center;
+  padding: 6px 14px;
+  background-color: $secondary-color;
+  color: #ffffff;
+  border: 2px solid $light-color;
+  width: 94px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+}
