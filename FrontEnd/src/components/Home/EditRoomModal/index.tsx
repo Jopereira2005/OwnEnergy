@@ -9,7 +9,7 @@ import { TrashIcon } from '../../../assets/Common/Trash'
 interface EditRoomModalProps {
   room: Room,
   isOpen: boolean,
-  toggleEditRoomModal: () => void,
+  toggleEditRoomModal: (status: boolean) => void,
   deleteRoomFunc: ( id: string ) => Promise<void>,
   onSubmit: (dados: FormData, id: string) => void,
 }
@@ -23,12 +23,6 @@ const EditRoomModal = ({ room, isOpen, toggleEditRoomModal, deleteRoomFunc, onSu
     }
   }, [isOpen]);
 
-  useEffect(() => {
-    if (isOpen) {
-      setDefaultData();
-    }
-  }, [isOpen == true]);
-
   const [name, setName] = useState('');
 
   const setDefaultData = () => {
@@ -39,7 +33,7 @@ const EditRoomModal = ({ room, isOpen, toggleEditRoomModal, deleteRoomFunc, onSu
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     onSubmit(formData, room.id || '');
-    toggleEditRoomModal();
+    toggleEditRoomModal(false);
   }
   
   const handleDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -47,8 +41,14 @@ const EditRoomModal = ({ room, isOpen, toggleEditRoomModal, deleteRoomFunc, onSu
     if (room.id) {
       deleteRoomFunc(room.id);
     }
-    toggleEditRoomModal();
+    toggleEditRoomModal(false);
   }
+
+  useEffect(() => {
+    if (isOpen) {
+      setDefaultData();
+    }
+  }, [isOpen == true]);
 
   return (
     <>
@@ -78,7 +78,7 @@ const EditRoomModal = ({ room, isOpen, toggleEditRoomModal, deleteRoomFunc, onSu
           </div>
         </form>
       </div>
-      { isOpen && <div className={ styled.backdrop } onClick={ toggleEditRoomModal }></div> }
+      { isOpen && <div className={ styled.backdrop } onClick={ () => toggleEditRoomModal(false) }></div> }
     </> 
   )
 }

@@ -26,15 +26,27 @@
         font-weight: 500;
       }
 
-      &__icon {
-        font-size: 3.5rem;
-        transition: 0.3s;
-        cursor: pointer;
-        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-
-        &:hover {
-          color: $contrast-color;
+      &__icons {
+        &__add, &__trash {
+          font-size: 3.5rem;
           transition: 0.3s;
+          cursor: pointer;
+          -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        }
+        
+
+        &__add {
+          &:hover {
+            transition: 0.3s;
+            color: $contrast-color;
+          }
+        }
+
+        &__trash {
+          &:hover {
+            transition: 0.3s;
+            color: $danger-color;
+          }
         }
       }
     }

@@ -11,6 +11,8 @@
   @extend %box_shadow;
   padding: 15px;
   cursor: pointer;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+
   transition: 0.3s;
 
   &__describe {

@@ -50,6 +50,30 @@ function News() {
       body: "A cidade de Sorocaba, no interior de São Paulo, agora abriga a maior usina solar do estado. A nova estrutura ocupa uma área de 53 mil metros quadrados e foi instalada há pouco mais de um mês no Parque Tecnológico da cidade. [...]",
       onClick: () => console.log("Ler mais")
     },
+    {
+      id:3, 
+      title: "TESTEMaior usina solar de São Paulo é instalada em Sorocaba",
+      subtitle: "Placas solares do Parque Tecnológico da cidade geram 10 GWh/ano, energia suficiente para abastecer 3.400 casas em 27 municípios do estado.",
+      author: "Carolina Brito",
+      news_org: "CNN",
+      date: "25/03/2025 às 15:47",
+      imageUrl: "/src/assets/News/teste.jpg", 
+      imageCaption: "Usina conta com quase 10 mil placas solares e tem capacidade de gerar 10 GWh/ano. - Divulgação/Parque Tecnológico de Sorocaba",
+      body: "A cidade de Sorocaba, no interior de São Paulo, agora abriga a maior usina solar do estado. A nova estrutura ocupa uma área de 53 mil metros quadrados e foi instalada há pouco mais de um mês no Parque Tecnológico da cidade. [...]",
+      onClick: () => console.log("Ler mais")
+    },
+    {
+      id:4, 
+      title: "TESTEMaior usina solar de São Paulo é instalada em Sorocaba",
+      subtitle: "Placas solares do Parque Tecnológico da cidade geram 10 GWh/ano, energia suficiente para abastecer 3.400 casas em 27 municípios do estado.",
+      author: "Carolina Brito",
+      news_org: "CNN",
+      date: "25/03/2025 às 15:47",
+      imageUrl: "/src/assets/News/teste.jpg", 
+      imageCaption: "Usina conta com quase 10 mil placas solares e tem capacidade de gerar 10 GWh/ano. - Divulgação/Parque Tecnológico de Sorocaba",
+      body: "A cidade de Sorocaba, no interior de São Paulo, agora abriga a maior usina solar do estado. A nova estrutura ocupa uma área de 53 mil metros quadrados e foi instalada há pouco mais de um mês no Parque Tecnológico da cidade. [...]",
+      onClick: () => console.log("Ler mais")
+    },
   ]
 
   return (

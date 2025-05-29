@@ -6,16 +6,13 @@ import styled from './style.module.scss'
 import Slider from '../Slider'
 import CardDevice from '../CardDevice'
 
-import CreateModal from '../../Home/CreateModal'
-import CreateRoomModal from '../../Home/CreateRoomModal'
-import EditModal from '../../Home/EditModal'
-import EditRoomModal from '../../Home/EditRoomModal'
-import AlertNotification from '../../Common/AlertNotification'
-
 import { Room } from '../../../interfaces/Room'
 import { Device } from '../../../interfaces/Device'
+import { Generator } from '../../../interfaces/Generator'
+
 
 import { AddIcon } from '../../../assets/Common/Add'
+import { TrashIcon } from '../../../assets/Common/Trash'
 
 import roomService from '../../../services/roomService';
 import deviceService from '../../../services/deviceService';
@@ -23,39 +20,37 @@ import deviceService from '../../../services/deviceService';
 interface mainDeviceProps {
   listDevices: Device[],
   listRooms: Room[],
-  toggleCreateModal: () => void,
-  openEditModal: () => void,
+  toggleCreateModal: (status: boolean) => void,
+  toggleEditModal: ( 
+    status: boolean, 
+    selectedItem?: Device | Generator
+  ) => void;
+  toggleCreateRoomModal: (status: boolean) => void,
+  toggleEditRoomModal: (
+    status: boolean, 
+    selectedRoom?: Room
+  ) => void,
+  toggleAlert:(
+    timeDuration: number, 
+    message: string, 
+    type: 'success' | 'error'
+  ) => void,
   loadDevices: () => Promise<void>,
   loadRooms: () => Promise<void>
 }
 
-const MainDevice = ({listDevices, listRooms, toggleCreateModal, openEditModal, loadDevices, loadRooms}: mainDeviceProps) => {
-  const _ = {  name: "", }
+  
 
+const MainDevice = ({listDevices, listRooms, toggleCreateModal, toggleEditModal, toggleCreateRoomModal, toggleEditRoomModal, toggleAlert,  loadDevices, loadRooms}: mainDeviceProps) => {
   const [devices, setDevices] = useState<Device[]>(listDevices);
   const [rooms, setRooms] = useState<Room[]>(listRooms);
   const [filteredDevices, setfilteredDevices] = useState<Device[]>([]);
 
   const [pressTimer, setPressTimer] = useState<NodeJS.Timeout | null>(null);
-  const [alertProps, setAlertProps] = useState({ message: '', timeDuration: 0, type: 'error' as 'success' | 'error'});
-  const [alertOpen, setAlertOpen] = useState(false);
   
-  const [selectDeviceData, setSelectDeviceData] = useState<Device>(_);
-  const [selectRoomData, setSelectRoomData] = useState<Room>(_);
-  const [selectRoomEditData, setSelectRoomEditData] = useState<Room>(_);
-  
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [isCreateRoomModalOpen, setIsCreateRoomModalOpen] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isEditRoomModalOpen, setIsEditRoomModalOpen] = useState(false);
-
-  const toggleCreateRoomModal = () => {
-    setIsCreateRoomModalOpen(!isCreateRoomModalOpen);
-  };
-
-  const toggleEditRoomModal = () => {
-    setIsEditRoomModalOpen(!isEditRoomModalOpen);
-  };
+  const [selectDeviceData, setSelectDeviceData] = useState<Device>({name: "", roomId: ""});
+  const [selectRoomData, setSelectRoomData] = useState<Room>({name: ""});
+  const [selectRoomEditData, setSelectRoomEditData] = useState<Room>({name: ""});
 
   const listDevicesByRoom = async () => {
     try {
@@ -72,7 +67,7 @@ const MainDevice = ({listDevices, listRooms, toggleCreateModal, openEditModal, l
   const deleteDevice = async ( id: string ) => {
     try {
       await deviceService.delete_device(id);
-      toggleAlertOpen(3000, "Dispositivo deletado com sucesso", "success");
+      toggleAlert(3000, "Dispositivo deletado com sucesso", "success");
       loadDevices()
       listDevicesByRoom()
     } catch (error) {
@@ -99,46 +94,16 @@ const MainDevice = ({listDevices, listRooms, toggleCreateModal, openEditModal, l
       await deviceService.device_switch( id );
       loadDevices()
     } catch(error: any) {
-      toggleAlertOpen(3000, "Erro ao tentar mudar o estado do dispositivo.", "error")
+      toggleAlert(3000, "Erro ao tentar mudar o estado do dispositivo.", "error")
     }
-  };
-
-  const editDevice = async (data: FormData, id: string) => {
-    const name = String(data.get('name')).trim();
-    const room = String(data.get('room'));
-    const intensity = Number(data.get('intensity')); 
-    
-    if(selectDeviceData.name !== name)  {
-      await deviceService.update_device_name(id, name);
-      toggleAlertOpen(3000, "Dispositivo alterado com sucesso", "success");
-    }
-    
-    if(selectDeviceData.roomId !== room) {
-      await deviceService.update_device_room(id, room);
-      toggleAlertOpen(3000, "Dispositivo alterado com sucesso", "success");
-    }
-
-    if(selectDeviceData.intensity !== intensity) {
-      await deviceService.update_device_dim(id, intensity);
-      toggleAlertOpen(3000, "Dispositivo alterado com sucesso", "success");
-    }
-
-    loadDevices();
-    listDevicesByRoom();
-  };
-
-  const sendDeviceData = (id: string) => {
-    const selectedCard = devices.find((device: Device) => device.id === id);
-    if (selectedCard) 
-      setSelectDeviceData(selectedCard);
   };
 
   const deleteRoom = async ( id: string ) => {
     try {
       await roomService.delete_room(id);
-      toggleAlertOpen(3000, "Ambiente deletado com sucesso", "success");
+      toggleAlert(3000, "Ambiente deletado com sucesso", "success");
       loadRooms();
-      setSelectRoomData(_);
+      setSelectRoomData({name: ""});
     } catch (error) {
       // setDevices([]);
     }
@@ -153,7 +118,7 @@ const MainDevice = ({listDevices, listRooms, toggleCreateModal, openEditModal, l
         throw response.error
       loadRooms()
     } catch(error: any) {
-      toggleAlertOpen(3000, error, "error")
+      toggleAlert(3000, error, "error")
     }
   };
   
@@ -166,7 +131,7 @@ const MainDevice = ({listDevices, listRooms, toggleCreateModal, openEditModal, l
         if(response.error)
           throw response.error
 
-        toggleAlertOpen(3000, "Ambiente atualizado com sucesso.", "success")
+        toggleAlert(3000, "Ambiente atualizado com sucesso.", "success")
         selectRoomData.id === id && setSelectRoomData({
           name: String(name).trim(),
         }) 
@@ -174,20 +139,20 @@ const MainDevice = ({listDevices, listRooms, toggleCreateModal, openEditModal, l
       loadRooms()
       
     } catch(error: any) {
-      toggleAlertOpen(3000, error, "error")
+      toggleAlert(3000, error, "error")
     }
   };
 
   const sendRoomData = (id_room: string | null) => {
     const selectedRoom = rooms.find((room: Room) => room.id === id_room);
     if(selectedRoom !== selectRoomData) 
-      setSelectRoomData(selectedRoom || _);  
+      setSelectRoomData(selectedRoom || {name: ""});  
   };
 
   const handleMouseDown = (room: Room) => {
     const timer = setTimeout(() => {
-      setSelectRoomEditData(room || _)
-      toggleEditRoomModal()
+      setSelectRoomEditData(room || {name: ""})
+      toggleEditRoomModal(true)
     }, 1500);
     setPressTimer(timer);
   };
@@ -199,17 +164,7 @@ const MainDevice = ({listDevices, listRooms, toggleCreateModal, openEditModal, l
     }
   };
 
-  const toggleAlertOpen = ( timeDuration: number, message: string, type: 'success' | 'error') => {
-    setAlertProps({
-      message: message,
-      timeDuration: timeDuration,
-      type: type,
-    })
-    setAlertOpen(true);
-  };
- 
   useEffect(() => {
-    console.log(filteredDevices);
     setfilteredDevices( devices.filter((item) => 
       item.roomId == selectRoomData.id));
   }, [ selectRoomData, devices, rooms ]);
@@ -219,7 +174,7 @@ const MainDevice = ({listDevices, listRooms, toggleCreateModal, openEditModal, l
       <div className={ styled.main_device }>
         <div className={ styled.main_device__carousel }>
           <Slider onSlideChangeFunc={ sendRoomData }>
-            <SwiperSlide><button className="create_button" onClick={ toggleCreateRoomModal }>Criar <AddIcon className="create_button__icon"/></button></SwiperSlide>
+            <SwiperSlide><button className="create_button" onClick={ () => toggleCreateRoomModal(true) }>Criar <AddIcon className="create_button__icon"/></button></SwiperSlide>
             { rooms.map((room) => (
               <SwiperSlide
                 key={ room.id }
@@ -241,8 +196,20 @@ const MainDevice = ({listDevices, listRooms, toggleCreateModal, openEditModal, l
             { selectRoomData.name !== '' ? 
               <h1 className={ styled.main_device__cards__header__text }>{ selectRoomData.name }</h1> : 
               <h1 className={ styled.main_device__cards__menssage} >Selecione algum ambiente ;)</h1>
-            }       
-            { selectRoomData.name !== '' && <AddIcon onClick={ toggleCreateModal } className={ styled.main_device__cards__header__icon }/>}  
+            }
+
+            {
+              selectRoomData.name !== '' && 
+              <div className={ styled.main_device__cards__header__icons }>
+                <AddIcon onClick={ () => toggleCreateModal(true) } className={ styled.main_device__cards__header__icons__add }/>
+                {/* <TrashIcon onClick={ 
+                  () => toggleConfirmModal(
+                    `Você realmente deseja excluir este ambiente ${selectRoomData.name}`, 
+                    () => deleteRoom(selectRoomData.id || '')
+                  )} className={ styled.main_device__cards__header__icons__trash }
+                /> */}
+              </div>  
+            }
           </div>
             { (filteredDevices.length == 0 && selectRoomData.name !== '') ? 
               <h1 className={ styled.main_device__cards__menssage }>Cadastre algum dispositivo para começar ;)</h1>
@@ -253,33 +220,12 @@ const MainDevice = ({listDevices, listRooms, toggleCreateModal, openEditModal, l
                 key={ device.id }
                 device={ device }
                 chanceStateFunc={ changeDeviceState }
-                onClickFunc = { openEditModal }
-                sendData={ sendDeviceData }
+                onClickFunc = { () => toggleEditModal(true, device)}
               />
             ))}
           </div>
         </div>
       </div>
-
-      <CreateRoomModal 
-        isOpen={ isCreateRoomModalOpen } 
-        toggleCreateRoomModal={ toggleCreateRoomModal } 
-        onSubmit={ createRoom }
-      />
-
-      <EditRoomModal
-        room={ selectRoomEditData }
-        isOpen={ isEditRoomModalOpen }
-        toggleEditRoomModal={ toggleEditRoomModal }
-        deleteRoomFunc={ deleteRoom }
-        onSubmit={ editRoom }
-      />
-
-      <AlertNotification
-        {...alertProps}
-        state={alertOpen}
-        handleClose={() => setAlertOpen(false)}      
-      />
     </> 
   )
 }

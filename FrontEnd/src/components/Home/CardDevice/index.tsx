@@ -8,14 +8,13 @@ import { MoreIcon } from '../../../assets/Common/More';
 
 import { Device } from '../../../interfaces/Device';
 
-interface CardProps {
+interface CardDeviceProps {
   device: Device,
-  onClickFunc: () => void
+  onClickFunc: (status: boolean, device?: Device) => void
   chanceStateFunc: (id: string) => Promise<void>
-  sendData: ( id_device: string ) => void;
 }
 
-const CardDevice = ({ device, onClickFunc, chanceStateFunc, sendData }: CardProps) => {
+const CardDevice = ({ device, onClickFunc, chanceStateFunc }: CardDeviceProps) => {
   const [isOn, setIsOn] = useState(device.status != 'Off');
 
   const toggleSwitch = () => {
@@ -31,7 +30,7 @@ const CardDevice = ({ device, onClickFunc, chanceStateFunc, sendData }: CardProp
 
           <div className={ styled.card__container__div }>
             <Switch state={ isOn } toggleSwitch={ toggleSwitch } />
-            <MoreIcon onClick={ () => { onClickFunc(); sendData(device.id || '') }} className={ styled.card__container__div__icon }/>
+            <MoreIcon onClick={ () => onClickFunc(true, device) } className={ styled.card__container__div__icon }/>
           </div>
         </div>
       </div>

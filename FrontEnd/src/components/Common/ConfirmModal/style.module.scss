@@ -1,0 +1,64 @@
+@use "../../../global.scss" as *;
+
+.modal {
+  @extend %flex-column;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
+  border-radius: 20px;
+  background-color: $secondary-color;
+  color: white;
+  transition: left 0.5s ease-in-out;
+  z-index: 20;
+
+  &__open {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  &__closed {
+    left: -250px;
+  }
+
+  &__text {
+    font-size: 2.3rem;
+    font-weight: 500;
+    margin-top: 20px
+  }
+
+  &__button {
+    @extend %box_shadow;
+    height: 40px;
+    border-radius: 10px;
+    background-color: $light-color;
+    color: $secondary-color;
+    border: none;
+    font-size: 1.7rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s ease;
+    
+    &:is(:hover, :focus) {
+      background-color: $gray-scale;
+      transition: 0.3s ease;
+    }
+  }
+}
+
+.backdrop {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+    transform: translate(-50%, -50%);
+
+  width: 100vw;
+  height: 100vh; 
+  z-index: 19;
+  background-color: rgba(0, 0, 0, 0.25);
+}
