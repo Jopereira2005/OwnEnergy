@@ -12,6 +12,10 @@ public class MapperProfile : Profile
     {
         CreateMap<User, UserResponseDTO>().ReverseMap();
         CreateMap<User, AdminResponseDTO>().ReverseMap();
+        CreateMap<User, LoginResponseDTO>()
+            .ForMember(dest => dest.AccessToken, opt => opt.Ignore())
+            .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.Id))
+            .ReverseMap();
         CreateMap<CreateCommand, User>();
         CreateMap<UpdateCommand, User>();
         CreateMap<UpdateEmailCommand, User>();
