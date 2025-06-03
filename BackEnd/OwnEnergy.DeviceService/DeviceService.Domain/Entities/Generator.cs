@@ -10,7 +10,7 @@ public class Generator : Entity
     public Guid GeneratorTypeId { get; set; }
     public required GeneratorType GeneratorType { get; set; }
 
-    public float GenerationRateWattsPerHour { get; set; } = 200f;
+    public float GenerationRateWattsPerHour { get; set; }
 
     public double TotalEnergyGeneratedKWh { get; set; }
     public TimeSpan TotalUptime { get; set; }

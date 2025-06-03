@@ -17,6 +17,8 @@ public class CreateDeviceCommand(string name) : IRequest<Guid>
     [JsonIgnore]
     public int? Brightness { get; set; } = 0;
 
+    public float PowerWatts { get; set; }
+
     public required string Name { get; set; } = name;
     public bool IsDimmable { get; set; }
 

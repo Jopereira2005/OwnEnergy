@@ -24,7 +24,7 @@ public class Device : Entity
     public int? Brightness { get; set; }
 
     public DeviceStatus Status { get; set; }
-    public float PowerWatts { get; set; } = 60f;
+    public float PowerWatts { get; set; }
 
     public DateTime? LastTurnedOnAt { get; set; }
 
