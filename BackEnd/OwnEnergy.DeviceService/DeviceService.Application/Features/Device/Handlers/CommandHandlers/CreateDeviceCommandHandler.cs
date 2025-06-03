@@ -43,7 +43,7 @@ public class CreateDeviceCommandHandler(
         device.UserId = Guid.Parse(userId);
         device.Status = DeviceStatus.Off;
 
-        await _deviceRepository.CreateAsync(device);
+        await _deviceRepository.CreateAsync(device, cancellationToken);
 
         return device.Id;
     }

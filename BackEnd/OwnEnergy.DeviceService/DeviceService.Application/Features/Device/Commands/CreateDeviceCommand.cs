@@ -7,10 +7,9 @@ namespace DeviceService.Application.Features.Device.Commands;
 public class CreateDeviceCommand(string name) : IRequest<Guid>
 {
     [JsonIgnore]
-    public Guid UserId { get; set; } = Guid.Empty;
+    public Guid UserId { get; set; }
 
-    [JsonIgnore]
-    public Guid RoomId { get; set; } = Guid.Empty;
+    public Guid RoomId { get; set; }
 
     [JsonIgnore]
     public Guid? GroupId { get; set; } = Guid.Empty;
