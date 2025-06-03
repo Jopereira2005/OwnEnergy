@@ -9,6 +9,6 @@ public class UserResponseDTO
     public Guid? GroupId { get; set; }
     public required string Name { get; set; }
     public bool? IsDimmable { get; set; }
-    public int? Brightness { get; set; }
+    public int? Intensity { get; set; }
     public string Status { get; set; } = null!;
 }
