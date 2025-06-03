@@ -19,7 +19,13 @@ public class GetAllDeviceTypesQueryHandler(
         CancellationToken cancellationToken
     )
     {
-        var deviceTypes = await _deviceTypeRepository.GetAllAsync(request.Page, request.PageSize);
+        var deviceTypes = await _deviceTypeRepository.GetAllAsync(
+            request.Page,
+            request.PageSize,
+            orderBy: dt => dt.TypeName,
+            ascending: true,
+            cancellationToken: cancellationToken
+        );
         var totalCount = await _deviceTypeRepository.CountAsync();
         var response = _mapper.Map<IEnumerable<DeviceTypeResponseDTO>>(deviceTypes);
 

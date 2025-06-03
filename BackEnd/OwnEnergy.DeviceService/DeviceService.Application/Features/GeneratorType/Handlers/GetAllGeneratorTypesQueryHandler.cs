@@ -22,8 +22,11 @@ public class GetAllGeneratorTypesQueryHandler(
         var generatorTypes = await _generatorTypeRepository.GetAllAsync(
             request.Page,
             request.PageSize,
-            cancellationToken
+            orderBy: gt => gt.TypeName,
+            ascending: true,
+            cancellationToken: cancellationToken
         );
+
         var totalCount = await _generatorTypeRepository.CountAsync();
         var response = _mapper.Map<IEnumerable<GeneratorTypeResponseDTO>>(generatorTypes);
 

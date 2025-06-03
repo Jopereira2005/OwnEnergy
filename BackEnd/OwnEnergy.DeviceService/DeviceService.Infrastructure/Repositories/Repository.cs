@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using DeviceService.Domain.Interfaces;
 using DeviceService.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -46,11 +47,19 @@ public class Repository<T> : IRepository<T>
     public async Task<IEnumerable<T>> GetAllAsync(
         int page,
         int pageSize,
-        CancellationToken cancellationToken
+        Expression<Func<T, object>>? orderBy = null,
+        bool ascending = true,
+        CancellationToken cancellationToken = default
     )
     {
+        var query = _dbSet.AsQueryable();
+
+        if (orderBy is not null)
+            query = ascending ? query.OrderBy(orderBy) : query.OrderByDescending(orderBy);
+
         var skipAmount = (page - 1) * pageSize;
-        return await _dbSet.Skip(skipAmount).Take(pageSize).ToListAsync(cancellationToken);
+
+        return await query.Skip(skipAmount).Take(pageSize).ToListAsync(cancellationToken);
     }
 
     public async Task<T?> GetByIdAsync(Guid id) => await _dbSet.FindAsync(id);

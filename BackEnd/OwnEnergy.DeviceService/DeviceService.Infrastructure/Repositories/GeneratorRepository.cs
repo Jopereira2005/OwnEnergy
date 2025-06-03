@@ -19,6 +19,8 @@ public class GeneratorRepository(DataContext dataContext)
         return await _dbSet
             .Include(g => g.GeneratorType)
             .Where(g => g.UserId == userId)
+            .OrderBy(g => g.Name)
+            .ThenBy(g => g.CreatedAt)
             .ToListAsync(cancellationToken);
     }
 
