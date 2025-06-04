@@ -83,4 +83,17 @@ public class GeneratorController(IMediator mediator, IHttpContextAccessor httpCo
         await _mediator.Send(command);
         return NoContent();
     }
+
+    [Authorize]
+    [HttpPut("{id:guid}/power-rate")]
+    public async Task<IActionResult> UpdatePowerRate(
+        Guid id,
+        [FromBody] UpdateGeneratorPowerRateCommand command
+    )
+    {
+        command.Id = id;
+        command.UserId = GetUserId();
+        await _mediator.Send(command);
+        return NoContent();
+    }
 }
