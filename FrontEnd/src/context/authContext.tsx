@@ -31,18 +31,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       if(response.status != 200)
         throw response
-      
+    
       const accessToken = (response.data as { accessToken: string }).accessToken;
-
       localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('user_id', response.data.userData.id);
-      localStorage.setItem('user', JSON.stringify(response.data.userData));
-      setUser(response.data.userData);
+      localStorage.setItem('user_id', response.data.userId);
+      localStorage.setItem('user', JSON.stringify(response.data));
+      setUser(response.data);
 
       return response
     } catch (err: any) {
-      setError(err.response.data.content);
-      return err.response
+      setError(err.response.data);
+      return err.response.data
     } finally {
       setLoading(false);
     }
@@ -52,7 +51,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = () => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
+    localStorage.removeItem('user_id');
     localStorage.removeItem('user');
+
     setUser(null);
     navigate('/login');
   };

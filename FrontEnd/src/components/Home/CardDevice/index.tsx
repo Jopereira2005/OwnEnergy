@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import styled from './style.module.scss'
 
@@ -10,17 +10,21 @@ import { Device } from '../../../interfaces/Device';
 
 interface CardDeviceProps {
   device: Device,
-  onClickFunc: (status: boolean, device?: Device) => void
-  chanceStateFunc: (id: string) => Promise<void>
+  toggleEditModal: (status: boolean, device?: Device) => void
+  chanceDeviceState: (id: string) => Promise<boolean>
 }
 
-const CardDevice = ({ device, onClickFunc, chanceStateFunc }: CardDeviceProps) => {
-  const [isOn, setIsOn] = useState(device.status != 'Off');
+const CardDevice = ({ device, toggleEditModal, chanceDeviceState }: CardDeviceProps) => {
+  const [isOn, setIsOn] = useState(false);
 
-  const toggleSwitch = () => {
-    setIsOn(!isOn);
-    chanceStateFunc(device.id || '');
+  const toggleSwitch = async () => {
+    if(await chanceDeviceState(device.id || ''))
+      setIsOn(!isOn);
   }
+
+  useEffect(() => {
+    setIsOn(device.status != 'Off');
+  }, [device]);
 
   return (
     <>
@@ -30,7 +34,7 @@ const CardDevice = ({ device, onClickFunc, chanceStateFunc }: CardDeviceProps) =
 
           <div className={ styled.card__container__div }>
             <Switch state={ isOn } toggleSwitch={ toggleSwitch } />
-            <MoreIcon onClick={ () => onClickFunc(true, device) } className={ styled.card__container__div__icon }/>
+            <MoreIcon onClick={ () => toggleEditModal(true, device) } className={ styled.card__container__div__icon }/>
           </div>
         </div>
       </div>

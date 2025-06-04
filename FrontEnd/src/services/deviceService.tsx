@@ -10,28 +10,19 @@ const deviceService =  {
     }
   },
 
-  async list_device_by_room( roomId: string ) {
-    try {
-
-      const response = await deviceAPI.get(`/Device/user_devices_by_room/${roomId}`);
-      return response;
-    } catch (error: any) {
-      return error.response.data;
-    }
-  },
-
-  async create_device( roomId: string, name:string, isDimmable: boolean ) {
+  async create_device( roomId: string, power: number, name: string, isDimmable: boolean ) {
     const data = {
       roomId: roomId,
       name: name,
+      powerWatts: power,
       isDimmable: isDimmable,
-      deviceType:  'Light'
+      deviceType: "Light"
     }
 
     try {
       await deviceAPI.post('/Device/create', data);
     } catch (error: any) {
-      return error.error;
+      return error;
     }
   },
 

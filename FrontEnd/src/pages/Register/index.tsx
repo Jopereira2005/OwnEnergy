@@ -48,9 +48,8 @@ function Register() {
 
       setAlertOpen(true);
     } catch (err: any) {
-      console.log(err.content);
       setAlertProps({
-        message: err.content,
+        message: err.content ? String(err.content) : "Erro ao logar",
         timeDuration: 3000,
         type: "error"
       })
@@ -72,7 +71,7 @@ function Register() {
 
             <div className={ styled.main__register }>
               <h1 className={ styled.main__register__title }>Cadastro</h1>
-              <form onSubmit={ handleRegister } className={ styled.main__register__form }>
+              <form autoComplete='false' onSubmit={ handleRegister } className={ styled.main__register__form }>
                 <div className={ styled.main__register__form__inputs }>
                   <Input
                     type="text"

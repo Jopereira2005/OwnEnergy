@@ -118,11 +118,12 @@
       }
     }
   }
+
+  &__page_title {
+    font-size: 3.5rem;
+    padding: 20px 0px 20px 0;
+    align-self: flex-start;
+    font-weight: 500;
+  }
 }
 
-.page_title {
-  font-size: 35px;
-  padding: 20px 0px 20px 0;
-  align-self: flex-start;
-  font-weight: 500;
-}

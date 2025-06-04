@@ -46,7 +46,7 @@
 }
 
 .newsCard__body {
-  font-size: 10px;
+  font-size: 12px;
   color: $light-color;
 }
 
@@ -55,11 +55,17 @@
   align-self: center;
   padding: 6px 14px;
   background-color: $secondary-color;
-  color: #ffffff;
+  color: $light-color;
   border: 2px solid $light-color;
   width: 94px;
   border-radius: 6px;
   font-weight: 600;
   font-size: 13px;
   cursor: pointer;
+  transition: 0.3s;
+
+   &:is(:hover, :focus) {
+    color: $secondary-color;
+    background-color: $light-color;
+  }
 }
