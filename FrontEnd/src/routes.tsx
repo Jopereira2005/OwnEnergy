@@ -6,20 +6,19 @@ import Dashboard from "./pages/Dashboard";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 
-// import PrivateRoute from './pages/PrivateRoute';
+import PrivateRoute from './pages/PrivateRoute';
 
 function MainRoutes() {
   return (
     <Routes> 
       <Route path="/cadastro" element={ <Register /> }/>
       <Route path="/login" element={ <Login /> }/>
-      <Route path="/" element={ <Home /> }/>
-      <Route path="/noticias" element={ <News /> }/>
-      <Route path="/rotina" element={ <Routine /> }/>
-      <Route path="/dashboard" element={ <Dashboard /> }/>
 
-      {/* <Route path="/" element={ <PrivateRoute><Home /></PrivateRoute> }/>
-      <Route path="/rotina" element={ <PrivateRoute><Routine /></PrivateRoute> }/> */}
+      <Route path="/" element={ <PrivateRoute><Home /></PrivateRoute> }/>
+      <Route path="/rotina" element={ <PrivateRoute><Routine /></PrivateRoute> }/>
+      <Route path="/noticias" element={ <PrivateRoute><News/></PrivateRoute> }/>
+      <Route path="/dashboard" element={ <PrivateRoute><Dashboard /></PrivateRoute> }/>
+      
     </Routes>
   );
 }
