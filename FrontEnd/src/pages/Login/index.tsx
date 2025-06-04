@@ -26,9 +26,8 @@ function Login() {
 
     try {
       const response: any = await login(credentials);
-
-      if(response.status != 200)  
-       throw response.data
+      if(response.statusCode)  
+       throw response
        
       setAlertProps({
         message: "Login efetuado com sucesso.",
@@ -43,7 +42,7 @@ function Login() {
 
     } catch(err: any){ 
       setAlertProps({
-        message: String(err.content),
+        message: err.error ? err.error : "Erro ao tentar entrar",
         timeDuration: 3000,
         type: 'error'     
       });
