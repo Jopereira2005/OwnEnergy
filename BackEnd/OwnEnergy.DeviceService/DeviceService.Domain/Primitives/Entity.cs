@@ -10,4 +10,9 @@ public abstract class Entity
     public virtual DateTime CreatedAt { get; protected set; } = DateTime.UtcNow;
 
     public DateTime? UpdatedAt { get; protected set; }
+
+    public void Update()
+    {
+        UpdatedAt = DateTime.UtcNow;
+    }
 }

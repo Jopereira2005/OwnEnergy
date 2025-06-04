@@ -3,14 +3,16 @@ using MediatR;
 
 namespace DeviceService.Application.Features.Generator.Commands;
 
-public class CreateGeneratorCommand : IRequest<Guid>
+public class UpdateGeneratorPowerRateCommand : IRequest
 {
     [JsonIgnore]
     public Guid UserId { get; set; }
 
-    public string Name { get; set; } = null!;
-
-    public string TypeName { get; set; } = null!;
+    [JsonIgnore]
+    public Guid Id { get; set; }
 
     public float GenerationRateWattsPerHour { get; set; }
+
+    [JsonIgnore]
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 }

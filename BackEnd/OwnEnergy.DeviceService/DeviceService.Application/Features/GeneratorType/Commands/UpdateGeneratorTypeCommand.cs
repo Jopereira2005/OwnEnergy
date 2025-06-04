@@ -3,12 +3,13 @@ using MediatR;
 
 namespace DeviceService.Application.Features.GeneratorType.Commands;
 
-public class CreateGeneratorTypeCommand : IRequest
+public class UpdateGeneratorTypeCommand : IRequest
 {
+    [JsonIgnore]
+    public Guid UserId { get; set; }
+
     [JsonIgnore]
     public Guid Id { get; set; }
 
     public string TypeName { get; set; } = null!;
-    public bool IsRenewable { get; set; }
-    public string? Description { get; set; }
 }

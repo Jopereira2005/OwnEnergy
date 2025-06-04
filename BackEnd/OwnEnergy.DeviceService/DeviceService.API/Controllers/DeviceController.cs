@@ -150,4 +150,16 @@ public class DeviceController(IMediator mediator) : ControllerBase
         var result = await _mediator.Send(query);
         return Ok(result);
     }
+
+    [Authorize]
+    [HttpPut("update/power_rate/{id}")]
+    public async Task<IActionResult> UpdateDevicePowerRate(
+        Guid id,
+        [FromBody] UpdateDevicePowerRateCommand command
+    )
+    {
+        command.Id = id;
+        await _mediator.Send(command);
+        return Ok();
+    }
 }

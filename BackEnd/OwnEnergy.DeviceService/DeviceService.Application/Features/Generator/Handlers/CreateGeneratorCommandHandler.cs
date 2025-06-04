@@ -24,11 +24,11 @@ public class CreateGeneratorCommandHandler(
         // Busca o tipo de gerador com nome fixo "Painel Solar"
         var generatorType =
             await _generatorTypeRepository.GetGeneratorTypeByNameAsync(
-                "Painel Solar",
+                request.TypeName,
                 cancellationToken
             )
             ?? throw new InvalidOperationException(
-                "Tipo de gerador 'Painel Solar' não foi encontrado."
+                $"Tipo de gerador '{request.TypeName}' não existe."
             );
 
         var generator = _mapper.Map<Entity.Generator>(request);
