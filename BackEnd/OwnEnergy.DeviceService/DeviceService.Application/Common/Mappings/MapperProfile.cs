@@ -20,7 +20,8 @@ public class MapperProfile : Profile
 
         CreateMap<Device, DeviceResponseDTO>()
             .ForMember(dest => dest.Intensity, opt => opt.MapFrom(src => src.Brightness))
-            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()));
+            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()))
+            .ForMember(dest => dest.PowerWatts, opt => opt.MapFrom(src => src.PowerWatts));
 
         CreateMap<Device, HardwareResponseDTO>()
             .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()))
