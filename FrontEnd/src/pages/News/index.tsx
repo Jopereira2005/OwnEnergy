@@ -36,43 +36,7 @@ function News() {
       imageUrl: "/src/assets/News/teste.jpg", 
       imageCaption: "Usina conta com quase 10 mil placas solares e tem capacidade de gerar 10 GWh/ano. - Divulgação/Parque Tecnológico de Sorocaba",
       body: "A cidade de Sorocaba, no interior de São Paulo, agora abriga a maior usina solar do estado. A nova estrutura ocupa uma área de 53 mil metros quadrados e foi instalada há pouco mais de um mês no Parque Tecnológico da cidade. [...]",
-      onClick: () => console.log("Ler mais")
-    },
-    {
-      id:2, 
-      title: "TESTEMaior usina solar de São Paulo é instalada em Sorocaba",
-      subtitle: "Placas solares do Parque Tecnológico da cidade geram 10 GWh/ano, energia suficiente para abastecer 3.400 casas em 27 municípios do estado.",
-      author: "Carolina Brito",
-      news_org: "CNN",
-      date: "25/03/2025 às 15:47",
-      imageUrl: "/src/assets/News/teste.jpg", 
-      imageCaption: "Usina conta com quase 10 mil placas solares e tem capacidade de gerar 10 GWh/ano. - Divulgação/Parque Tecnológico de Sorocaba",
-      body: "A cidade de Sorocaba, no interior de São Paulo, agora abriga a maior usina solar do estado. A nova estrutura ocupa uma área de 53 mil metros quadrados e foi instalada há pouco mais de um mês no Parque Tecnológico da cidade. [...]",
-      onClick: () => console.log("Ler mais")
-    },
-    {
-      id:3, 
-      title: "TESTEMaior usina solar de São Paulo é instalada em Sorocaba",
-      subtitle: "Placas solares do Parque Tecnológico da cidade geram 10 GWh/ano, energia suficiente para abastecer 3.400 casas em 27 municípios do estado.",
-      author: "Carolina Brito",
-      news_org: "CNN",
-      date: "25/03/2025 às 15:47",
-      imageUrl: "/src/assets/News/teste.jpg", 
-      imageCaption: "Usina conta com quase 10 mil placas solares e tem capacidade de gerar 10 GWh/ano. - Divulgação/Parque Tecnológico de Sorocaba",
-      body: "A cidade de Sorocaba, no interior de São Paulo, agora abriga a maior usina solar do estado. A nova estrutura ocupa uma área de 53 mil metros quadrados e foi instalada há pouco mais de um mês no Parque Tecnológico da cidade. [...]",
-      onClick: () => console.log("Ler mais")
-    },
-    {
-      id:4, 
-      title: "TESTEMaior usina solar de São Paulo é instalada em Sorocaba",
-      subtitle: "Placas solares do Parque Tecnológico da cidade geram 10 GWh/ano, energia suficiente para abastecer 3.400 casas em 27 municípios do estado.",
-      author: "Carolina Brito",
-      news_org: "CNN",
-      date: "25/03/2025 às 15:47",
-      imageUrl: "/src/assets/News/teste.jpg", 
-      imageCaption: "Usina conta com quase 10 mil placas solares e tem capacidade de gerar 10 GWh/ano. - Divulgação/Parque Tecnológico de Sorocaba",
-      body: "A cidade de Sorocaba, no interior de São Paulo, agora abriga a maior usina solar do estado. A nova estrutura ocupa uma área de 53 mil metros quadrados e foi instalada há pouco mais de um mês no Parque Tecnológico da cidade. [...]",
-      onClick: () => console.log("Ler mais")
+      onClick: () => window.open('https://www.cnnbrasil.com.br/nacional/sudeste/sp/maior-usina-solar-de-sao-paulo-e-instalada-em-sorocaba/', '_blank')
     },
   ]
 
@@ -98,9 +62,9 @@ function News() {
                       <div className={ styled.main__search__list__item__text__name }>
                         { cards.title } |   
                       </div>
-                      {/* <span className={ styled.main__search__list__item__text__room }>
-                        { "kkkanalha" }
-                      </span> */}
+                      <span className={ styled.main__search__list__item__text__room }>
+                        { cards.author }
+                      </span>
                     </div>
                   </li>
                   ))}
@@ -130,7 +94,7 @@ function News() {
             </ul>
           }
         </div>
-        <h1 className={ styled.page_title } >Noticias</h1>
+        <h1 className={ styled.main__page_title } >Noticias</h1>
         {news_cards.map((card) => (
           <Card
             key={card.id}
