@@ -1,10 +1,16 @@
 import axios from 'axios';
 
 // Base URLs
-const loginURL = "https://b813-187-72-140-154.ngrok-free.app"; //5008
-const userURL = "https://b813-187-72-140-154.ngrok-free.app"; //5008
-const deviceURL = "https://f4dc-187-72-140-154.ngrok-free.app"; //5034
-const automationURL = "https://9e28-187-72-140-154.ngrok-free.app"; //5233
+
+// const loginURL = "http://localhost:5008"; //5008
+// const userURL = "http://localhost:5008"; //5008
+// const deviceURL = "http://localhost:5034"; //5034
+// const automationURL = "http://localhost:5233"; //5233
+
+const loginURL = "https://4f75-2804-90-5000-6d2c-24e9-5b4-6e8a-899c.ngrok-free.app"; //5008
+const userURL = "https://4f75-2804-90-5000-6d2c-24e9-5b4-6e8a-899c.ngrok-free.app"; //5008
+const deviceURL = "https://bb9c-2804-90-5000-6d2c-24e9-5b4-6e8a-899c.ngrok-free.app"; //5034
+const automationURL = "https://c0a4-2804-90-5000-6d2c-24e9-5b4-6e8a-899c.ngrok-free.app"; //5233
 
 // Função para criar instâncias de Axios
 
@@ -70,7 +76,7 @@ const createAxiosInstance = (baseURL: string) => {
 };
 
 // Instâncias para as APIs
-export const forLogin = axios.create({ baseURL: `${loginURL}/api`, headers: { "ngrok-skip-browser-warning": "ok" } });
+export const forLogin = axios.create({ baseURL: `${loginURL}/api`, headers: { "ngrok-skip-browser-warning": "ok", "Authorization": `Bearer ${localStorage.getItem('accessToken')}` } });
 export const userAPI = createAxiosInstance(userURL);
 export const deviceAPI = createAxiosInstance(deviceURL);
 export const automationAPI = createAxiosInstance(automationURL);
