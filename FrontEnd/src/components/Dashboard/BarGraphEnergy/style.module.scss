@@ -1,0 +1,14 @@
+@use "../../../global.scss" as *;
+
+.graph {
+  @extend %flex-column;
+  justify-content: space-between;
+  width: calc(100% - 30px);
+  height: 100px;
+  background-color: $secondary-color;
+  border-radius: 20px;
+  @extend %box_shadow;
+  padding: 15px;
+  transition: 0.3s;
+  margin-bottom: 20px;
+}

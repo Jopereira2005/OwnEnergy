@@ -6,19 +6,22 @@ import InputSelect from '../../Common/InputSelect';
 
 import { Room } from '../../../interfaces/Room'
 import { Device } from '../../../interfaces/Device'
+import { Generator } from '../../../interfaces/Generator'
+
 
 import { TrashIcon } from '../../../assets/Common/Trash'
 
 interface EditModalProps {
-  device: Device,
-  rooms: Room[],
+  device?: Device,
+  generator?: Generator,
+  rooms?: Room[],
   isOpen: boolean,
-  closeEditModal: () => void,
-  deleteDeviceFunc: ( id: string ) => Promise<void>,
+  toggleEditModal: (status: boolean) => void,
+  deleteFunc: ( id: string ) => Promise<void>,
   onSubmit: (dados: FormData, id: string) => void,
 }
 
-const EditModal = ({ device, rooms, isOpen, closeEditModal, deleteDeviceFunc, onSubmit }: EditModalProps) => {
+const EditModal = ({ device, generator, rooms, isOpen, toggleEditModal, deleteFunc, onSubmit }: EditModalProps) => {
   useEffect(() => {
     if (isOpen) {
       document.body.classList.add("no_scroll");
@@ -27,41 +30,59 @@ const EditModal = ({ device, rooms, isOpen, closeEditModal, deleteDeviceFunc, on
     }
   }, [isOpen]);
 
-  useEffect(() => {
-    if (isOpen) {
-      setDefaultData();
-    }
-  }, [isOpen == true]);
+  const [item, setItem] = useState<Device | Generator>({name: ''});
 
   const [name, setName] = useState('');
-  const [roomId, setRoomId] = useState<string | null>('null');
-  const [brightness, setBrightness] = useState(100);
+  const [power, setPower] = useState(0);
+  const [roomId, setRoomId] = useState<string | null>(null);
+  const [intensity, setIntensity] = useState<number | null>(null);
 
-  const options = rooms.map((room) => ({
-    value: room.id!,
-    label: room.name,
-  }));
+  function isDevice(item: Device | Generator): item is Device {
+    return (item as Device).roomId !== undefined;
+  }
 
   const setDefaultData = () => {
-    setName(device.name ?? '');
-    setRoomId(device.roomId ?? '');
-    setBrightness(device.intensity ?? 100);
+    setName(item.name ?? '')
+    setPower(item.power ?? 0);
+    if ( isDevice(item) ) {
+      setRoomId(item.roomId ?? '');
+      setIntensity(item.intensity ?? 100);
+    } 
   }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    onSubmit(formData, device.id || '');
-    closeEditModal();
+    onSubmit(formData, item.id || '');
+    toggleEditModal(false);
   }
   
   const handleDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    if (device.id) {
-      deleteDeviceFunc(device.id);
+    if (item.id) {
+      deleteFunc(item.id);
     }
-    closeEditModal();
+    toggleEditModal(false);
   }
+
+  const options = rooms?.map((room) => ({
+    value: room.id!,
+    label: room.name,
+  })) || [];
+
+  useEffect(() => {
+    const selected = device || generator;
+    if (!selected) return;
+
+    setItem(selected);
+    setName(selected.name ?? '');
+    setPower(selected.power ?? 0);
+
+    if (isDevice(selected)) {
+      setRoomId(selected.roomId ?? '');
+      setIntensity(selected.intensity ?? 100);
+    }
+  }, [isOpen == true]);
 
   return (
     <>
@@ -83,7 +104,7 @@ const EditModal = ({ device, rooms, isOpen, closeEditModal, deleteDeviceFunc, on
               /> 
             </div>
 
-            { device.isDimmable &&    
+            {/* { item as Device && &&    
               <div className={ styled.modal__form__container_input__range }>
                 <label htmlFor="brightness" >Brilho: { brightness }</label>
                 <input
@@ -108,7 +129,7 @@ const EditModal = ({ device, rooms, isOpen, closeEditModal, deleteDeviceFunc, on
                 placeholder="Selecione uma sala..." 
                 required
               />
-            </div>
+            </div> */}
           </div>
 
           <div className={ styled.modal__form__button_group }>
@@ -117,7 +138,7 @@ const EditModal = ({ device, rooms, isOpen, closeEditModal, deleteDeviceFunc, on
           </div>
         </form>
       </div>
-      { isOpen && <div className={ styled.backdrop } onClick={ closeEditModal }></div> }
+      { isOpen && <div className={ styled.backdrop } onClick={ () => toggleEditModal(false) }></div> }
     </> 
   )
 }

@@ -110,9 +110,9 @@ function News() {
                       <div className={ styled.main__search__list__item__text__name }>
                         { cards.title } |   
                       </div>
-                      {/* <span className={ styled.main__search__list__item__text__room }>
-                        { "kkkanalha" }
-                      </span> */}
+                      <span className={ styled.main__search__list__item__text__room }>
+                        { cards.author }
+                      </span>
                     </div>
                   </li>
                   ))}
@@ -142,7 +142,7 @@ function News() {
             </ul>
           }
         </div>
-        <h1 className={ styled.page_title } >Noticias</h1>
+        <h1 className={ styled.main__page_title } >Noticias</h1>
         {news_cards.map((card) => (
           <Card
             key={card.id}
