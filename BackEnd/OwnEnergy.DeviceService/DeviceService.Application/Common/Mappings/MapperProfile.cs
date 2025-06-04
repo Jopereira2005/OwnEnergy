@@ -54,6 +54,8 @@ public class MapperProfile : Profile
 
         CreateMap<GeneratorType, GeneratorTypeResponseDTO>().ReverseMap();
         CreateMap<CreateGeneratorTypeCommand, GeneratorType>();
+        CreateMap<UpdateGeneratorTypeCommand, GeneratorType>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore());
 
         CreateMap<Generator, GeneratorResponseDTO>()
             .ForMember(
