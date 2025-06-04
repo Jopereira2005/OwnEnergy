@@ -10,5 +10,7 @@ public class CreateGeneratorCommand : IRequest<Guid>
 
     public string Name { get; set; } = null!;
 
+    public string TypeName { get; set; } = null!;
+
     public float GenerationRateWattsPerHour { get; set; }
 }
