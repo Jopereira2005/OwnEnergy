@@ -22,10 +22,7 @@ const Sidebar = ({ isOpen, toggleSidebar}: SidebarProps) => {
     }
   }, [isOpen]);
 
-  const user = {
-    name: "PAXE"
-  }
-  // const user = JSON.parse(localStorage.getItem('user') || '');
+  const user = JSON.parse(localStorage.getItem('user') || '');
 
   return (
     <>
