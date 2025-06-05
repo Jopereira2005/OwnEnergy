@@ -18,64 +18,23 @@ import AlertNotification from '../../components/Common/AlertNotification'
 import { Room } from '../../interfaces/Room'
 import { Device } from '../../interfaces/Device'
 import { Generator } from '../../interfaces/Generator'
+import { GeneratorType } from '../../interfaces/GeneratorType'
 
-import deviceService from '../../services/deviceService';
 import roomService from '../../services/roomService';
-import ConfirmModal from '../../components/Common/ConfirmModal';
+import deviceService from '../../services/deviceService';
+import generatorService from '../../services/generatorService';
+
+// import ConfirmModal from '../../components/Common/ConfirmModal';
 
 function Home() {
   const deviceMain = useRef<HTMLDivElement>(null);
   const generatorMain = useRef<HTMLDivElement>(null);
 
-  const [rooms, setRooms] = useState<Room[]>([
-    { id: "1", name: "Sala", userId: "1" }, 
-    { id: "2", name: "Cozinha", userId: "1" },
-    { id: "3", name: "Quarto", userId: "1"},
-  ]);
+  const [rooms, setRooms] = useState<Room[]>([]);
+  const [devices, setDevices] = useState<Device[]>([]);
+  const [generators, setGenerator] = useState<Generator[]>([]);
+  const [generatorTypes, setGeneratorTypes] = useState<GeneratorType[]>([]);
 
-  const [devices, setDevices] = useState<Device[]>([
-    { id: "1", roomId: "1", name: "Dispositivo 1", status: "On" },
-    { id: "2", roomId: "1", name: "Dispositivo 2", status: "On" },
-    { id: "3", roomId: "1", name: "Dispositivo 3", status: "On" },
-    { id: "4", roomId: "2", name: "Dispositivo 4", status: "On" },
-    { id: "5", roomId: "2", name: "Dispositivo 5", status: "On" },
-    { id: "6", roomId: "2", name: "Dispositivo 6", status: "On" },
-    { id: "7", roomId: "3", name: "Dispositivo 7", status: "On" },
-    { id: "8", roomId: "3", name: "Dispositivo 8", status: "On" },
-    { id: "9", roomId: "3", name: "Dispositivo 9", status: "On" },
-    { id: "10", roomId: "3", name: "Dispositivo 9", status: "On" },
-    { id: "11", roomId: "3", name: "Dispositivo 9", status: "On" },
-    { id: "12", roomId: "3", name: "Dispositivo 9", status: "On" },
-    { id: "13", roomId: "3", name: "Dispositivo 9", status: "On" },
-    { id: "14", roomId: "3", name: "Dispositivo 9", status: "On" },
-    { id: "15", roomId: "3", name: "Dispositivo 9", status: "On" },
-    { id: "16", roomId: "3", name: "Dispositivo 9", status: "On" },
-    { id: "17", roomId: "3", name: "Dispositivo 9", status: "On" },
-    { id: "18", roomId: "3", name: "Dispositivo 9", status: "On" },
-    { id: "19", roomId: "3", name: "Dispositivo 9", status: "On" },
-    { id: "20", roomId: "3", name: "Dispositivo 9", status: "On" },
-    { id: "21", roomId: "3", name: "Dispositivo 9", status: "On" },
-    { id: "22", roomId: "3", name: "Dispositivo 9", status: "On" },
-    { id: "23", roomId: "3", name: "Dispositivo 9", status: "On" },
-    { id: "24", roomId: "3", name: "Dispositivo 9", status: "On" },
-    { id: "25", roomId: "3", name: "Dispositivo 9", status: "On" },
-    { id: "26", roomId: "3", name: "Dispositivo 9", status: "On" },
-    { id: "27", roomId: "3", name: "Dispositivo 9", status: "On" },
-    { id: "28", roomId: "3", name: "Dispositivo 9", status: "On" },
-    { id: "29", roomId: "3", name: "Dispositivo 9", status: "On" },
-    { id: "30", roomId: "3", name: "Dispositivo 9", status: "On" },
-  ]);
-
-  const [generators, setGenerator] = useState<Generator[]>([
-    { id: "1", name: "Dispositivo 1", power: 200,  status: "On" },
-    { id: "2", name: "Dispositivo 2", power: 200, status: "On" },
-    { id: "3", name: "Dispositivo 3", power: 200, status: "On" },
-    { id: "4", name: "Dispositivo 4", power: 200, status: "Off" },
-    { id: "5", name: "Dispositivo 5", power: 200, status: "On" },
-  ]);
-  
-  const [searchBarList, setSearchBarList] = useState<Device[] | Generator[]>([]);
-  const [sendSearchBarData, setSendSearchBarData] = useState<Device | Generator | null>(null);
  
   const [selectedDeviceData, setSelectedDeviceData] = useState<Device>({name: "", roomId: ""});
   const [selectedGeneratorData, setSelectedGeneratorData] = useState<Generator>({name: ""});
@@ -86,7 +45,7 @@ function Home() {
   const [isEditRoomModalOpen, setIsEditRoomModalOpen] = useState(false);
   const [isCreateRoomModalOpen, setIsCreateRoomModalOpen] = useState(false);
 
-  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  // const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   
   const [type, setType] = useState<'device' | 'generator'>("device")
 
@@ -100,6 +59,7 @@ function Home() {
   const switchDeviceGenerator = ( option: 'device' | 'generator' ) => {
     if( type != option )
       setType(option);
+    type == "device" ? loadDevices(): loadGenerators(); 
   }
 
   //+---------------------------------------+
@@ -109,31 +69,58 @@ function Home() {
   const loadRooms = async () => {
     try {
       const response = await roomService.list_rooms();
-      setRooms(response.data.items || [])
+      setRooms(response.data.items || []);      
     } catch (error) {
-      setRooms([]);
+      toggleAlert(3000, "Erro ao carregar os Ambientes", "error");
     }
   };
 
   const loadDevices = async () => {
-    try {
-      const response = await deviceService.list_device();
-      const devices = response.data?.items || [];
+  try {
+    const response = await deviceService.list_device();
 
-      setDevices(devices);
-    } catch (error) {
-      // setDevices([]);
-    }
+    const devicesMapped: Device[] = (response.data?.items || []).map((raw: any) => ({
+      id: raw.id,
+      name: raw.name,
+      roomId: raw.roomId,
+      isDimmable: raw.isDimmable,
+      intensity: raw.intensity ?? undefined,
+      power: raw.powerWatts,
+      status: raw.status,
+    }));
+
+    setDevices(devicesMapped);
+  } catch (error) {
+    toggleAlert(3000, "Erro ao carregar os Dispositivos", "error");
   }
+};
   
   const loadGenerators = async () => {
     try {
-      const response = await deviceService.list_device();
-      const devices = response.data?.items || [];
+      const response = await generatorService.list_generator();
 
-      setDevices(devices);
+      const generatorsMapped: Generator[] = (response.data || []).map((raw: any) => ({
+        id: raw.id,
+        name: raw.name,
+        typeName: raw.generatorTypeName,
+        power: raw.generationRateWattsPerHour ,
+        status: raw.isActive ?  "On" : "Off",
+      }));
+
+      setGenerator(generatorsMapped);
+      console.log(generatorsMapped)
     } catch (error) {
-      // setDevices([]);
+      toggleAlert(3000, "Erro ao carregar os Geradores", "error");
+    }
+  }
+
+  const loadGeneratorTypes = async () => {
+    try {
+      const response = await generatorService.list_generatorType();
+
+      setGeneratorTypes(response.data?.items || []);
+    } catch (error) {
+      toggleAlert(3000, "Erro ao carregar os Tipos de Geradores", "error");
     }
   }
 
@@ -148,30 +135,39 @@ function Home() {
       const response = await roomService.create_room( String(name).trim() );
       if(response.error) 
         throw response.error
-      loadRooms()
+
+    toggleAlert(3000, `Ambiente ${name} criado com sucesso.`, "success");
+
+      loadRooms();
     } catch(error: any) {
       toggleAlert(3000, error, "error")
     }
   };
 
   const createDeviceGenerator = async ( formData: FormData ) => {
-    const nome = String(formData.get('name'));
-    const power = formData.get('name');
-
+    const name = String(formData.get('name'));
+    const typeName = String(formData.get('typeName'));
+    const power = Number(formData.get('power'));
     const ajustavel = Boolean(formData.get('dimmable')); 
 
     if(type == "device") {
       try {
-        // await deviceService.create_device(selectedRoomData.id || '', nome, ajustavel);
-        loadGenerators();
+        await deviceService.create_device(selectedRoomData.id || '', power, name, ajustavel);
+        toggleAlert(3000, `Dispositivo ${name} criado com sucesso.`, "success");
+
+        loadDevices();
       } catch (error) {
+        toggleAlert(3000, "Erro ao criar Dispositivo", "error");
         return error;
       }
     } else {
-      try {
-        // await deviceService.create_device(selectedRoomData.id || '', nome, ajustavel);
+       try {
+        await generatorService.create_generator(name, typeName, power);
+        toggleAlert(3000, `Gerador ${name} criado com sucesso.`, "success");
+
         loadGenerators();
       } catch (error) {
+        toggleAlert(3000, "Erro ao criar Gerador", "error");
         return error;
       }
     }
@@ -190,7 +186,7 @@ function Home() {
         if(response.error)
           throw response.error
 
-        toggleAlert(3000, "Ambiente atualizado com sucesso.", "success")
+        toggleAlert(3000, "Ambiente atualizado com sucesso.", "success");
         selectedRoomData.id === id && setSelectedRoomData({
           name: String(name).trim(),
         }) 
@@ -207,38 +203,46 @@ function Home() {
     const power = Number(data.get('power'));
     const room = String(data.get('room'));
     const intensity = Number(data.get('intensity'));
-    let cont = 0;
 
     if(type == "device") {
-      if(selectedDeviceData.name !== name )  {
+      let cont = 0;
+
+      if(selectedDeviceData.name != name )  {
         await deviceService.update_device_name(id, name);
         cont++;
-      } if(selectedDeviceData.power !== power )  {
-        await deviceService.update_device_name(id, name);
+      } if(selectedDeviceData.power != power )  {
+        await deviceService.update_device_power(id, power);
         cont++;
-      } if(selectedDeviceData.roomId !== room) {
+      } if(selectedDeviceData.roomId != room) {
         await deviceService.update_device_room(id, room);
         cont++;
-      } if(selectedDeviceData.intensity !== intensity) {
+      } if(selectedDeviceData.intensity != intensity) {
         await deviceService.update_device_dim(id, intensity);
         cont++;
       } 
       
-      if(!cont) {
+      if(cont) {
         toggleAlert(3000, "Dispositivo alterado com sucesso", "success");
       }
+    loadDevices();
+
     } else {
-      if(selectedDeviceData.name !== name )  {
-        await deviceService.update_device_name(id, name);
+      let cont = 0;
+
+      if(selectedGeneratorData.name != name )  {
+        await generatorService.update_generator_name(id, name);
+        cont++;
+      } if(selectedGeneratorData.power != power )  {
+        await generatorService.update_generator_power(id, power);
         cont++;
       } 
       
-      if(!cont) {
+      if(cont) {
         toggleAlert(3000, "Gerador alterado com sucesso", "success");
       }
+      loadGenerators();
     }
 
-    loadDevices();
   };
 
   //+---------------------------------------+
@@ -249,10 +253,10 @@ function Home() {
     try {
       await roomService.delete_room(id);
       toggleAlert(3000, "Ambiente deletado com sucesso", "success");
-      loadRooms();
       setSelectedRoomData({name: ""});
-    } catch (error) {
-      // setDevices([]);
+      loadRooms();
+    } catch (error: any) {
+      toggleAlert(3000, error, "error")
     }
   };
 
@@ -261,18 +265,43 @@ function Home() {
       await deviceService.delete_device(id);
       toggleAlert(3000, "Dispositivo deletado com sucesso", "success");
       loadDevices()  
-    } catch (error) {
-      // setDevices([]);
+    } catch (error: any) {
+      toggleAlert(3000, error, "error")
     }
   };
 
   const deleteGenerator = async ( id: string ) => {
     try {
-      await deviceService.delete_device(id);
-      toggleAlert(3000, "Dispositivo deletado com sucesso", "success");
-      loadDevices()  
-    } catch (error) {
-      // setDevices([]);
+      await generatorService.delete_generator(id);
+      toggleAlert(3000, "Gerador deletado com sucesso", "success");
+      loadGenerators()  
+    } catch (error: any) {
+      toggleAlert(3000, error, "error")
+    }
+  };
+
+  //+---------------------------------------+
+  //| Change State Functions                |
+  //+---------------------------------------+
+
+  const changeDeviceState = async( id: string ) => {
+    try {
+      await deviceService.device_switch( id );
+      return true
+    } catch(error: any) {
+      toggleAlert(3000, "Erro ao tentar mudar o estado do dispositivo.", "error")
+      return false
+    }
+  };
+
+  const changeGeneratorState = async( id: string ) => {
+    try {
+      const generator = generators.find(item => item.id === id);
+      generator?.status == "Off" ? await generatorService.generator_active( id ) : await generatorService.generator_desactive( id )
+      return true
+    } catch(error: any) {
+      toggleAlert(3000, "Erro ao tentar mudar o estado do dispositivo.", "error");
+      return false
     }
   };
 
@@ -280,7 +309,21 @@ function Home() {
   //| Toggle Functions                      |
   //+---------------------------------------+ 
 
-  const toggleCreateModal = (state: boolean) => {
+  const toggleCreateRoomModal = (state: boolean) => {
+    setIsCreateRoomModalOpen(state);
+  }
+
+  const toggleEditRoomModal = (state: boolean, selectedRoom?: Room) => {
+    if(state) {
+      setSelectedRoomData(selectedRoom || selectedRoomData);
+    }
+    setIsEditRoomModalOpen(state);
+  };
+
+  const toggleCreateModal = (state: boolean, selectedRoom?: Room) => {
+    if(state) {
+      setSelectedRoomData(selectedRoom || selectedRoomData);
+    }
     setIsCreateModalOpen(state);
   };
 
@@ -297,21 +340,6 @@ function Home() {
     setIsEditModalOpen(state);
   };
 
-  const toggleCreateRoomModal = (state: boolean) => {
-    setIsCreateRoomModalOpen(state);
-  }
-
-  const toggleEditRoomModal = (state: boolean, selectedRoom?: Room) => {
-    if(state) {
-      setSelectedRoomData(selectedRoom || selectedRoomData)
-    }
-    setIsEditModalOpen(state);
-  };
-
-  const toggleConfirmModal = (state: boolean) => {
-    setIsEditModalOpen(state);
-  };
-
   const toggleAlert = ( timeDuration: number, message: string, type: 'success' | 'error') => {
     setAlertProps({
       message: message,
@@ -322,20 +350,17 @@ function Home() {
   }; 
   
   useEffect(() => {
-    loadDevices();
     loadRooms();
+    loadDevices();
+    loadGenerators();
+    loadGeneratorTypes();
   }, []);
-
-  useEffect(() => {
-    setSearchBarList(devices);
-  }, [devices]);
 
   useEffect(() => {
     const generator = generatorMain.current!;
     const device = deviceMain.current!;
   
     if (type != "device") {
-      setSearchBarList(generators);
       generator.style.display = 'flex';
   
       requestAnimationFrame(() => {
@@ -347,7 +372,6 @@ function Home() {
         device.style.display = 'none';
       }, 500);
     } else {
-      setSearchBarList(devices);
       device.style.display = 'flex';
     
       requestAnimationFrame(() => {
@@ -365,12 +389,13 @@ function Home() {
     <div className={ styled.home }>
       <Header />
       <main className={ styled.main }>
-        {/* <SeachBar
-          list={ searchBarList }
-          listRoom={ rooms }
-          handleModalFunc={ loadDevices }
-          sendData={ sendDeviceGeneratorData }
-        /> */}
+        <SeachBar
+          list={ type === "device" ? devices : generators }
+          listRoom={ type === "device" ? rooms : undefined }
+          toggleEditModal = { toggleEditModal }
+          changeItemState={ type === "device" ? changeDeviceState : changeGeneratorState }
+          loadItens={ type === "device" ? loadDevices : loadGenerators }
+        />
 
         <div className={ styled.main__buttons }>
           <button className={ `${styled.main__buttons__button} ${ type == "device" ? styled.main__buttons__button__active : '' }` } onClick={() => switchDeviceGenerator("device")}>Dispositivos</button>
@@ -382,44 +407,43 @@ function Home() {
             <MainDevice
               listRooms = { rooms }
               listDevices = { devices }
-              loadRooms = { loadRooms }
-              loadDevices = { loadDevices }
               toggleCreateModal = { toggleCreateModal }
               toggleEditModal = { toggleEditModal }
               toggleCreateRoomModal = { toggleCreateRoomModal }
               toggleEditRoomModal = { toggleEditRoomModal }
-              toggleAlert= { toggleAlert }
+              changeDeviceState={ changeDeviceState }
             />
           </div>
 
           <div ref={ generatorMain } className={ styled.main__device_generator__generator }>
-            {/* <MainGenerator
+            <MainGenerator
               listGenerators = { generators }
-              loadGenerators = { loadGenerators }
+              listGeneratorTypes = { generatorTypes }
               toggleCreateModal = { toggleCreateModal }
-              openEditModal = { () => openEditModal(type) }
-            /> */}
+              toggleEditModal = { toggleEditModal }
+              changeGeneratorState={ changeGeneratorState }
+            />
           </div>
         </div>
       </main>
       <NavBar />
 
-      {/* <CreateModal 
+      <CreateModal 
         type={ type }
+        generatorTypes={ generatorTypes }
         isOpen={ isCreateModalOpen } 
         toggleCreateModal={ toggleCreateModal } 
         onSubmit={ createDeviceGenerator }
-      /> */}
+      />
 
-      {/* <CreateRoomModal 
+      <CreateRoomModal 
         isOpen={ isCreateRoomModalOpen } 
         toggleCreateRoomModal={ toggleCreateRoomModal } 
         onSubmit={ createRoom }
-      /> */}
+      />
 
       <EditModal
-        device={ type === "device" ? selectedDeviceData : undefined }
-        generator={ type === "generator" ? selectedGeneratorData : undefined }
+        selectedItem={ type === "device" ? selectedDeviceData : selectedGeneratorData }
         rooms={ rooms }
         isOpen={ isEditModalOpen }
         toggleEditModal={ toggleEditModal }
@@ -434,7 +458,6 @@ function Home() {
         deleteRoomFunc={ deleteRoom }
         onSubmit={ editRoom }
       />
-
 
      {/* <ConfirmModal
         {...confirmMessageProps}
