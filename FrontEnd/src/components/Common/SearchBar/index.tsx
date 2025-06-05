@@ -3,27 +3,33 @@ import styled from './style.module.scss'
 
 import { SearchIcon } from '../../../assets/Common/Search'
 
-import Switch from '../../Common/Switch'
+import SeachBarItem from '../../Common/SeachBarItem'
 
 import { Device } from '../../../interfaces/Device'
+import { Generator } from '../../../interfaces/Generator'
+
 import { Room } from '../../../interfaces/Room'
 
 interface SearchBarProps {
-  list: Device[],
-  listRoom: Room[],
-  handleModalFunc: () => void,
-  sendData: ( id_device: string ) => void;
+  list: Device[] | Generator[],
+  listRoom?: Room[],
+  toggleEditModal: ( 
+    status: boolean, 
+    selectedItem?: Device | Generator
+  ) => void,
+  changeItemState: (id: string) => Promise<boolean>,
+  loadItens: () => Promise<void>
 }
 
-const SearchBar = ({ list, listRoom, handleModalFunc, sendData}: SearchBarProps) => {
-  // const [isOn, setIsOn] = useState(false);
-  const [filteredList, setFilteredList] = useState<Device[]>(list);
+const SearchBar = ({ list, listRoom, toggleEditModal, changeItemState, loadItens}: SearchBarProps) => {
+  const [filteredList, setFilteredList] = useState<Device[] |Generator[]>([]);
   const [inputValue, setInputValue] = useState('');
   
   const listaRef = useRef<HTMLDivElement | null>(null);
-  
-  const toggleSwitch = () => {
-  };
+
+  function isDevice(item: Device | Generator): item is Device {
+    return (item as Device).roomId !== undefined;
+  }
 
   const handleClickOutside = (e: MouseEvent) => {
     if (listaRef.current && !listaRef.current.contains(e.target as Node)) {
@@ -48,7 +54,7 @@ const SearchBar = ({ list, listRoom, handleModalFunc, sendData}: SearchBarProps)
     <div className={ styled.search } ref={ listaRef }>
       <div className={ styled.search__search_bar} >
         <SearchIcon className={ styled.search__search_bar__img }/>
-        <input className={ styled.search__search_bar__input } 
+        <input onClick={ loadItens } className={ styled.search__search_bar__input } 
           type="text" 
           placeholder="Pesquise"
           value={ inputValue }
@@ -60,19 +66,14 @@ const SearchBar = ({ list, listRoom, handleModalFunc, sendData}: SearchBarProps)
         <ul className={ styled.search__list } >
           { filteredList.length !== 0 ? 
             filteredList.map((item) => (
-              <li key={ item.id } className={ styled.search__list__item }>
-                <div onClick={() => { item.id && sendData(item.id); handleModalFunc()}} className={ styled.search__list__item__text }>
-                  <div className={ styled.search__list__item__text__name }>
-                    { item.name } |   
-                  </div>
-                  <span className={ styled.search__list__item__text__room }>
-                    { listRoom.length != 0 ? listRoom.find((room) => room.id === item.roomId)?.name : ''}
-                  </span>
-                </div>
-                <div className={ styled.search__list__item__btn }>
-                  <Switch state={ item.status != "Off" ? true : false } toggleSwitch={ toggleSwitch } />
-                </div>
-              </li>
+              <SeachBarItem 
+                key={ item.id }
+                item={ item }
+                room={ listRoom && isDevice(item) ? listRoom.find((room) => room.id === item.roomId) : undefined }
+                toggleEditModal={ toggleEditModal }
+                changeItemState={ changeItemState }
+                loadItens={ loadItens }
+              />
             )) :
             <span className={ styled.search__list__menssage }>Nenhum resultado encontrado</span>
           }

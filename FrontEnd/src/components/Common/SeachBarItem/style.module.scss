@@ -1,0 +1,36 @@
+@use "../../../global.scss" as *;
+
+.searchbar_item { 
+  @extend %flex-center-y;
+  justify-content: space-between;
+  width: calc(100% - 20px);
+  padding: 5px 10px;
+  background: $dark-color;
+  border-radius: 10px;
+  &__text {
+    @extend %flex-center-y;
+    gap: 5px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width: calc(100% - 20px);
+    cursor: pointer;
+
+    &__name {
+      font-size: 1.5rem;
+      width: fit-content;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    &__room {
+      font-size: 1.3rem;
+      color: $gray-scale;
+    }
+  }
+
+  &__btn {
+    z-index: 16;
+  }
+}
