@@ -12,8 +12,7 @@ import { Generator } from '../../../interfaces/Generator'
 import { TrashIcon } from '../../../assets/Common/Trash'
 
 interface EditModalProps {
-  device?: Device,
-  generator?: Generator,
+  selectedItem: Device | Generator,
   rooms?: Room[],
   isOpen: boolean,
   toggleEditModal: (status: boolean) => void,
@@ -21,7 +20,7 @@ interface EditModalProps {
   onSubmit: (dados: FormData, id: string) => void,
 }
 
-const EditModal = ({ device, generator, rooms, isOpen, toggleEditModal, deleteFunc, onSubmit }: EditModalProps) => {
+const EditModal = ({ selectedItem, rooms, isOpen, toggleEditModal, deleteFunc, onSubmit }: EditModalProps) => {
   useEffect(() => {
     if (isOpen) {
       document.body.classList.add("no_scroll");
@@ -31,7 +30,8 @@ const EditModal = ({ device, generator, rooms, isOpen, toggleEditModal, deleteFu
   }, [isOpen]);
 
   const [item, setItem] = useState<Device | Generator>({name: ''});
-
+  const [options, setOptions] = useState<{ value: string; label: string }[]>([]);
+  
   const [name, setName] = useState('');
   const [power, setPower] = useState(0);
   const [roomId, setRoomId] = useState<string | null>(null);
@@ -65,29 +65,30 @@ const EditModal = ({ device, generator, rooms, isOpen, toggleEditModal, deleteFu
     toggleEditModal(false);
   }
 
-  const options = rooms?.map((room) => ({
-    value: room.id!,
-    label: room.name,
-  })) || [];
+   useEffect(() => {
+    setOptions(
+      rooms?.map((room) => ({
+        value: room.id!,
+        label: room.name,
+      })) || []
+    );
+  }, [rooms]);
 
   useEffect(() => {
-    const selected = device || generator;
-    if (!selected) return;
+    setItem(selectedItem);
+    setName(selectedItem.name ?? '');
+    setPower(selectedItem.power ?? 0);
 
-    setItem(selected);
-    setName(selected.name ?? '');
-    setPower(selected.power ?? 0);
-
-    if (isDevice(selected)) {
-      setRoomId(selected.roomId ?? '');
-      setIntensity(selected.intensity ?? 100);
+    if (isDevice(selectedItem)) {
+      setRoomId(selectedItem.roomId ?? '');
+      setIntensity(selectedItem.intensity ?? 100);
     }
   }, [isOpen == true]);
 
   return (
     <>
       <div className={ `${styled.modal} ${isOpen ? styled.modal__open : styled.modal__closed}` }>
-        <h1 onClick={ setDefaultData } className={ styled.modal__title }>Editar Dispositivo</h1>
+        <h1 onClick={ setDefaultData } className={ styled.modal__title }>Editar { isDevice(item) ? "Dispositivo" : "Gerador"}</h1>
         <form onSubmit={ handleSubmit } className={ styled.modal__form }>
           <div className={ styled.modal__form__container_input}>
             <div className={ styled.modal__form__container_input__input}>
@@ -104,36 +105,53 @@ const EditModal = ({ device, generator, rooms, isOpen, toggleEditModal, deleteFu
               /> 
             </div>
 
-            {/* { item as Device && &&    
+            <div className={ styled.modal__form__container_input__input}>
+              <label htmlFor="power">Potência({ isDevice(item) ? "W": "kW/h"}) : </label>
+              <input
+                type="number"
+                id="power"
+                name="power"
+                value={ power }
+                onChange={(e) => setPower(Number(e.target.value))}
+                placeholder="Digite a potência..."
+                required
+                autoComplete="off"
+              /> 
+            </div>
+
+            { isDevice(item) && item.isDimmable && 
               <div className={ styled.modal__form__container_input__range }>
-                <label htmlFor="brightness" >Brilho: { brightness }</label>
+                <label htmlFor="intensity" >Intensidade: { intensity }</label>
                 <input
-                  id="brightness"
-                  name="brightness"
+                  id="intensity"
+                  name="intensity"
                   type="range" 
-                  min="1" 
+                  min="0" 
                   max="100" 
-                  value={ brightness }
-                  onChange={(e) => setBrightness(Number(e.target.value))}
+                  value={ intensity ?? 0 }
+                  onChange={(e) => setIntensity(Number(e.target.value))}
                 />
               </div>
             }
-            <div className={ styled.modal__form__container_input__select }>
-              <label htmlFor="room">Selecione a Sala:</label>
-              <InputSelect 
-                id="room"
-                name="room"
-                options={ options } 
-                inputValue={ options.find(option => option.value === roomId) || null }
-                onChangeFunc={ (option: { value: string; label: string; } | null) => setRoomId(option ? option.value : '') }
-                placeholder="Selecione uma sala..." 
-                required
-              />
-            </div> */}
+
+            { isDevice(item) &&
+              <div className={ styled.modal__form__container_input__select }>
+                <label htmlFor="room">Selecione a Sala:</label>
+                <InputSelect 
+                  id="room"
+                  name="room"
+                  options={ options } 
+                  inputValue={ options.find(option => option.value === roomId) || null }
+                  onChangeFunc={ (option: { value: string; label: string; } | null) => setRoomId(option ? option.value : '') }
+                  placeholder="Selecione uma sala..." 
+                  required
+                />
+              </div>
+            }
           </div>
 
           <div className={ styled.modal__form__button_group }>
-            <button className={ styled.modal__form__button_group__button_trash } onClick={ handleDelete }><TrashIcon className={styled.modal__form__button_group__button_trash__icon }/></button>
+            <button className={ styled.modal__form__button_group__button_trash } onClick={ handleDelete }><TrashIcon className={ styled.modal__form__button_group__button_trash__icon }/></button>
             <button type="submit" className={ styled.modal__form__button_group__button }>Editar</button>
           </div>
         </form>

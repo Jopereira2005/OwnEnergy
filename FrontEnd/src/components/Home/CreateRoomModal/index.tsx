@@ -4,7 +4,7 @@ import styled from './style.module.scss'
 
 interface CreateRoomModalProps {
   isOpen: boolean;
-  toggleCreateRoomModal: () => void
+  toggleCreateRoomModal: (status: boolean) => void
   onSubmit: (dados: FormData) => void;
 }
 
@@ -29,7 +29,7 @@ const CreateRoomModal = ({ isOpen, toggleCreateRoomModal, onSubmit }: CreateRoom
 
   const handleClose = () => {
     setName('');
-    toggleCreateRoomModal()
+    toggleCreateRoomModal(false)
   }
 
   return (
@@ -39,25 +39,25 @@ const CreateRoomModal = ({ isOpen, toggleCreateRoomModal, onSubmit }: CreateRoom
         <form onSubmit={ handleSubmit } className={ styled.modal__form }>
           <div className={ styled.modal__form__container_input}>
             <div className={ styled.modal__form__container_input__input}>
-                <label htmlFor="nome">Nome: </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  minLength={ 3 }
-                  value={ name }
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Digite o nome do Ambiente..."
-                  required
-                  autoComplete="off"
-                /> 
+              <label htmlFor="nome">Nome: </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                minLength={ 3 }
+                value={ name }
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Digite o nome do Ambiente..."
+                required
+                autoComplete="off"
+              /> 
             </div>
           </div>
 
           <button type="submit" className={ styled.modal__form__button }>Criar</button>
         </form>
       </div>
-      { isOpen && <div className={ styled.backdrop } onClick={ toggleCreateRoomModal }></div> }
+      { isOpen && <div className={ styled.backdrop } onClick={ handleClose }></div> }
     </> 
   )
 }

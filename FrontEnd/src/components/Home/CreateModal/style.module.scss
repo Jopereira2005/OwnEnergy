@@ -9,7 +9,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 300px;
-  height: 290px;
+  height: auto;
   border-radius: 20px;
   background-color: $secondary-color;
   color: white;
@@ -46,6 +46,7 @@
 
       &__input {
         @extend %flex-column;
+        margin-bottom: 10px;
         
         label {
           font-size: 1.5rem;
@@ -63,6 +64,8 @@
           outline: none;
           transition: 0.05s ease;
           @extend %box_shadow;
+          margin-bottom: 5px;
+          
           
           &:is(:hover) {
             border: 2px solid $contrast-color;
@@ -79,7 +82,8 @@
       &__switch {
         @extend %flex-center-y;
         justify-content: space-between;
-        margin-top: 15px;
+        margin-bottom: 10px;
+
         
         &__text {
           font-size: 1.5rem;
@@ -122,7 +126,7 @@
       }
 
       &__select {
-        margin-top: 15px;
+        margin-bottom: 10px;
 
         label {
           font-size: 1.5rem;
@@ -141,6 +145,7 @@
       font-weight: 700;
       cursor: pointer;
       transition: 0.3s ease;
+      margin-top: 20px;
 
       &:is(:hover, :focus) {
         background-color: $gray-scale;

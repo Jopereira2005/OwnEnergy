@@ -9,7 +9,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 300px;
-  max-height: 400px;
+  max-height: 500px;
   border-radius: 20px;
   background-color: $secondary-color;
   color: white;
@@ -46,6 +46,7 @@
 
       &__input {
         @extend %flex-column;
+        margin-bottom: 10px;
         
         label {
           font-size: 1.5rem;
@@ -78,8 +79,8 @@
 
       &__range {
         @extend %flex-column;
-        margin-top: 15px;
 
+        margin-bottom: 10px;
         label {
           font-size: 1.5rem;
           margin-bottom: 5px;
@@ -115,7 +116,7 @@
       }
 
       &__select {
-        margin-top: 15px;
+        margin-bottom: 10px;
 
         label {
           font-size: 1.5rem;
