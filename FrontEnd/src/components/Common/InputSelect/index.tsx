@@ -42,7 +42,6 @@ const InputSelectMult = ({ id, options, name, placeholder, inputValue, onChangeF
       options={ options } 
       value={ inputValue }
       placeholder={ placeholder } 
-      isMulti
       onChange={ (newValue, actionMeta) => onChangeFunc(newValue as unknown as { value: string; label: string } | null, actionMeta) }
       styles={ inputStyles }
       required
@@ -58,7 +57,7 @@ const InputSelectMult = ({ id, options, name, placeholder, inputValue, onChangeF
           primary50: "#00647D",
           neutral0: "#003D4E",
           neutral5: "#FFFFEC",
-          neutral10: "#FFFFEC",
+          neutral10: "#00647D",
           neutral20: "#FFFFEC",
           neutral30: "#FFFF39",
           neutral40: "#FFFFEC",
