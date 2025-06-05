@@ -6,10 +6,10 @@ builder.Services.AddAPIServices(builder.Configuration);
 
 var app = builder.Build();
 
+app.UseCors("CorsPolicy");
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseCors("CorsPolicy");
 app.UseDeveloperExceptionPage();
 app.UseSwagger();
 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Automation Service API v1"));
