@@ -44,6 +44,15 @@ const deviceService =  {
     }
   },
 
+  async update_device_power( id: string, power: number ) {
+    try {
+      const response = await deviceAPI.put(`/Device/update/power_rate/${id}`, { powerWatts: power });
+      return response;
+    } catch (error: any) {
+      return error.response.data;
+    }
+  },
+
   async update_device_room( id: string, roomId: string ) {
     try {
       const response = await deviceAPI.put(`/Device/update/device_room/${id}`, { roomId });
@@ -53,9 +62,9 @@ const deviceService =  {
     }
   },
 
-  async update_device_dim( id: string, brightness: number ) {
+  async update_device_dim( id: string, instensity: number ) {
     try {
-      const response = await deviceAPI.post(`/DeviceAction/dim/${id}`, { brightness });
+      const response = await deviceAPI.post(`/DeviceAction/dim/${id}`, { brightness : instensity });
       return response;
     } catch (error: any) {
       return error.response.data;
