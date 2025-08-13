@@ -7,10 +7,10 @@ import axios from 'axios';
 // const deviceURL = "http://localhost:5034"; //5034
 // const automationURL = "http://localhost:5233"; //5233
 
-const loginURL = "https://4f75-2804-90-5000-6d2c-24e9-5b4-6e8a-899c.ngrok-free.app"; //5008
-const userURL = "https://4f75-2804-90-5000-6d2c-24e9-5b4-6e8a-899c.ngrok-free.app"; //5008
-const deviceURL = "https://bb9c-2804-90-5000-6d2c-24e9-5b4-6e8a-899c.ngrok-free.app"; //5034
-const automationURL = "https://c0a4-2804-90-5000-6d2c-24e9-5b4-6e8a-899c.ngrok-free.app"; //5233
+const loginURL = "https://73ee-2804-214-98e1-32ab-d4c4-1f3b-ec6c-1fbb.ngrok-free.app"; //5008
+const userURL = "https://73ee-2804-214-98e1-32ab-d4c4-1f3b-ec6c-1fbb.ngrok-free.app"; //5008
+const deviceURL = "https://4c24-2804-214-98e1-32ab-d4c4-1f3b-ec6c-1fbb.ngrok-free.app"; //5034
+const automationURL = "https://1da7-2804-214-98e1-32ab-d4c4-1f3b-ec6c-1fbb.ngrok-free.app"; //5233
 
 // Função para criar instâncias de Axios
 

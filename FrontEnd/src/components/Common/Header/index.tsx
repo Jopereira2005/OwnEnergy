@@ -20,7 +20,7 @@ const Header = () => {
       <header className={ styled.header }>
         <div className={ styled.header__logo }>
           <img src={ logo } className={ styled.header__logo__img } alt="logo" />
-          <h1 className={ styled.header__logo__text }>Own<span>Light</span></h1>
+          <h1 className={ styled.header__logo__text }>Own<span>Energy</span></h1>
         </div>
 
         <div className={ styled.header__profile }>

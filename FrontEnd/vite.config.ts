@@ -8,7 +8,7 @@ export default defineConfig({
   server: {
     allowedHosts: [
       'localhost',
-      '9c1d-45-191-221-98.ngrok-free.app' // <- adicione aqui
+      'poker-applies-dpi-hugh.trycloudflare.com' // <- adicione aqui
     ]
   }
 })

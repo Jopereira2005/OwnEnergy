@@ -3,7 +3,7 @@ import { deviceAPI } from './server';
 const deviceService =  {
   async list_device() {
     try {
-      const response = await deviceAPI.get('/Device/all');
+      const response = await deviceAPI.get('/Device/user_devices');
       return response;
     } catch (error: any) {
       return error.response.data;
